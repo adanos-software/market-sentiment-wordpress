@@ -1,0 +1,25 @@
+.adanos-rsi-widget-wrapper {
+    width: 100%;
+    max-width: 100%;
+    margin: 24px 0;
+}
+
+.adanos-rsi-widget-wrapper adanos-stock-sentiment,
+.adanos-rsi-widget-wrapper adanos-ticker-tape,
+.adanos-rsi-widget-wrapper adanos-top-movers {
+    display: block;
+    width: 100%;
+}
+
+.adanos-rsi-widget-error {
+    margin: 24px 0;
+    border-left: 4px solid #dc2626;
+    border-radius: 12px;
+    background: #fff7f7;
+    color: #7f1d1d;
+    padding: 16px 18px;
+}
+
+.adanos-rsi-widget-error p {
+    margin: 0;
+}
