@@ -146,15 +146,14 @@ function adanos_rsi_render_settings_page() {
             .adanos-rsi-card p { margin: 0 0 10px; color: #50575e; line-height: 1.5; }
             .adanos-rsi-muted { color: #646970; }
             .adanos-rsi-grid { display: grid; gap: 12px; }
-            .adanos-rsi-grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .adanos-rsi-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
             .adanos-rsi-snippet { display: block; padding: 10px 12px; background: #f6f7f7; border: 1px solid #e5e7eb; border-radius: 8px; overflow-x: auto; white-space: normal; word-break: break-word; line-height: 1.45; }
             .adanos-rsi-shortcode { display: grid; gap: 10px; align-content: start; padding: 14px; border: 1px solid #e5e7eb; border-radius: 12px; background: #fcfcfd; }
-            .adanos-rsi-shortcode ul, .adanos-rsi-steps, .adanos-rsi-faq-list { margin: 0; padding-left: 18px; }
+            .adanos-rsi-shortcode ul, .adanos-rsi-steps, .adanos-rsi-bullet-list { margin: 0; padding-left: 18px; }
             .adanos-rsi-shortcode ul { padding-left: 0; list-style: none; display: grid; gap: 6px; }
-            .adanos-rsi-shortcode li, .adanos-rsi-steps li, .adanos-rsi-faq-list li { margin: 0 0 6px; line-height: 1.45; }
+            .adanos-rsi-shortcode li, .adanos-rsi-steps li, .adanos-rsi-bullet-list li { margin: 0 0 6px; line-height: 1.45; }
             .adanos-rsi-shortcode li { margin: 0; }
-            .adanos-rsi-faq-list { list-style: disc; }
+            .adanos-rsi-bullet-list { list-style: disc; }
             .adanos-rsi-chips { display: flex; flex-wrap: wrap; gap: 8px; }
             .adanos-rsi-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; border-radius: 999px; background: #f6f7f7; border: 1px solid #dcdcde; font-size: 12px; }
             .adanos-rsi-chip code { background: transparent; padding: 0; }
@@ -164,8 +163,6 @@ function adanos_rsi_render_settings_page() {
             .adanos-rsi-stat { padding: 14px; border: 1px solid #e5e7eb; border-radius: 12px; background: #fcfcfd; }
             .adanos-rsi-stat-label { display: block; margin-bottom: 6px; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: #646970; }
             .adanos-rsi-stat-value { font-size: 26px; font-weight: 700; line-height: 1.1; }
-            .adanos-rsi-callout { padding: 0; border: 0; background: transparent; border-radius: 0; }
-            .adanos-rsi-callout p { margin: 0; }
             .adanos-rsi-section-copy { margin: 0 0 14px; color: #50575e; max-width: 720px; }
             .adanos-rsi-form-wrap form { margin: 0; }
             .adanos-rsi-form-wrap .form-table { margin: 0 0 14px; border-collapse: separate; border-spacing: 0; }
@@ -191,7 +188,7 @@ function adanos_rsi_render_settings_page() {
             @media (max-width: 782px) {
                 .adanos-rsi-admin { padding-right: 0; }
                 .adanos-rsi-hero { padding: 18px; }
-                .adanos-rsi-grid.cols-2, .adanos-rsi-grid.cols-3 { grid-template-columns: 1fr; }
+                .adanos-rsi-grid.cols-3 { grid-template-columns: 1fr; }
                 .adanos-rsi-form-wrap .form-table tr { grid-template-columns: 1fr; gap: 8px; }
             }
         </style>
@@ -356,17 +353,15 @@ function adanos_rsi_render_settings_page() {
 
                     <div class="adanos-rsi-card">
                         <h2><?php echo esc_html__('Best use cases', 'adanos-retail-sentiment-insights'); ?></h2>
-                        <div class="adanos-rsi-callout">
-                            <ul class="adanos-rsi-faq-list">
-                                <li><?php echo esc_html__('Stock profile pages with live sentiment context', 'adanos-retail-sentiment-insights'); ?></li>
-                                <li><?php echo esc_html__('Earnings preview posts and post-call recap articles', 'adanos-retail-sentiment-insights'); ?></li>
-                                <li><?php echo esc_html__('“Why this stock is trending” explainers', 'adanos-retail-sentiment-insights'); ?></li>
-                                <li><?php echo esc_html__('Market open / market close summary posts', 'adanos-retail-sentiment-insights'); ?></li>
-                                <li><?php echo esc_html__('Newsletter landing pages and daily market briefings', 'adanos-retail-sentiment-insights'); ?></li>
-                                <li><?php echo esc_html__('Comparison pieces like NVDA vs AMD or TSLA vs Rivian', 'adanos-retail-sentiment-insights'); ?></li>
-                                <li><?php echo esc_html__('Watchlist pages for growth, AI, EV, or meme-stock coverage', 'adanos-retail-sentiment-insights'); ?></li>
-                            </ul>
-                        </div>
+                        <ul class="adanos-rsi-bullet-list">
+                            <li><?php echo esc_html__('Stock profile pages with live sentiment context', 'adanos-retail-sentiment-insights'); ?></li>
+                            <li><?php echo esc_html__('Earnings preview posts and post-call recap articles', 'adanos-retail-sentiment-insights'); ?></li>
+                            <li><?php echo esc_html__('“Why this stock is trending” explainers', 'adanos-retail-sentiment-insights'); ?></li>
+                            <li><?php echo esc_html__('Market open / market close summary posts', 'adanos-retail-sentiment-insights'); ?></li>
+                            <li><?php echo esc_html__('Newsletter landing pages and daily market briefings', 'adanos-retail-sentiment-insights'); ?></li>
+                            <li><?php echo esc_html__('Comparison pieces like NVDA vs AMD or TSLA vs Rivian', 'adanos-retail-sentiment-insights'); ?></li>
+                            <li><?php echo esc_html__('Watchlist pages for growth, AI, EV, or meme-stock coverage', 'adanos-retail-sentiment-insights'); ?></li>
+                        </ul>
                     </div>
                 </div>
             </div>
