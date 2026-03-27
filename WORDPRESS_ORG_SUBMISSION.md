@@ -6,15 +6,26 @@ This repository contains the public source for the `Market Sentiment` WordPress 
 
 - `market-sentiment`
 
-## Included assets
+## What stays in this GitHub repo
 
 - `readme.txt` for WordPress.org parsing
-- `wordpress-org-assets/banner-1544x500.png`
-- `wordpress-org-assets/banner-772x250.png`
-- `wordpress-org-assets/icon-256x256.png`
-- `wordpress-org-assets/icon-128x128.png`
-- `wordpress-org-assets/screenshot-1.png`
-- `wordpress-org-assets/screenshot-2.png`
+- `wordpress-org-assets/` for source-controlled listing art
+- `README.md`, `SECURITY.md`, and this file as repo documentation
+
+## What goes to WordPress.org SVN
+
+- `trunk/`
+  - `adanos-retail-sentiment-insights.php`
+  - `assets/`
+  - `readme.txt`
+  - `uninstall.php`
+- top-level SVN `assets/`
+  - `banner-1544x500.png`
+  - `banner-772x250.png`
+  - `icon-256x256.png`
+  - `icon-128x128.png`
+  - `screenshot-1.png`
+  - `screenshot-2.png`
 
 ## External service disclosure
 
@@ -43,6 +54,14 @@ For GitHub releases, the installable ZIP should contain this structure:
   - `uninstall.php`
 
 `wordpress-org-assets/`, `README.md`, `SECURITY.md`, and this file are repository metadata and should not be required inside the install ZIP.
+
+## Submission flow
+
+1. Submit the plugin through the WordPress.org plugin uploader and request the slug `market-sentiment`.
+2. After approval, use the provided SVN repository URL.
+3. Commit the plugin code to `trunk/`.
+4. Commit the listing assets to the SVN root `assets/`.
+5. Create the first SVN tag, for example `tags/0.5.5/`.
 
 ## Validation
 

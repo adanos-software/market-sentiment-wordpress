@@ -4,7 +4,7 @@ Tags: stocks, finance, investing, sentiment, shortcode, widget
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 0.5.4
+Stable tag: 0.5.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -202,6 +202,11 @@ The plugin also stores cached API responses in WordPress transients to reduce re
 The plugin does not track visitors, set its own analytics cookies, or send visitor-entered form data to Adanos.
 
 == Changelog ==
+
+= 0.5.5 =
+
+* Refreshed the WordPress.org banner, icon, and screenshots with cleaner final assets
+* Clarified the repository vs. WordPress.org SVN submission structure in the repo docs
 
 = 0.5.4 =
 
