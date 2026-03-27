@@ -1,8 +1,8 @@
 === Market Sentiment ===
 Contributors: adanos
-Tags: stocks, finance, investing, sentiment, shortcode, widget
+Tags: stocks, finance, sentiment, shortcode, widget
 Requires at least: 6.0
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.4
 Stable tag: 0.5.5
 License: GPLv2 or later

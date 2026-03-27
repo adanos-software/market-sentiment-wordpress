@@ -397,11 +397,13 @@ function adanos_rsi_admin_notice_cache_cleared() {
         return;
     }
 
-    if (empty($_GET['page']) || 'adanos-rsi' !== sanitize_key((string) $_GET['page'])) {
+    $page = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    if (empty($page) || 'adanos-rsi' !== sanitize_key((string) $page)) {
         return;
     }
 
-    if (empty($_GET['adanos_cache_cleared'])) {
+    $cache_cleared = filter_input(INPUT_GET, 'adanos_cache_cleared', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    if (empty($cache_cleared)) {
         return;
     }
 
