@@ -63,6 +63,12 @@ For GitHub releases, the installable ZIP should contain this structure:
 4. Commit the listing assets to the SVN root `assets/`.
 5. Create the first SVN tag, for example `tags/0.5.5/`.
 
+## Local preflight note
+
+Until the plugin is actually installed from a `market-sentiment` directory or checked from the WordPress.org SVN repo, local `plugin-check` runs should pass the intended slug explicitly:
+
+- `wp plugin check adanos-retail-sentiment-insights --slug=market-sentiment`
+
 ## Validation
 
 Validated before release with:
