@@ -79,7 +79,7 @@ This plugin uses the Adanos Finance API:
 
 ## Repository contents
 
-- `adanos-retail-sentiment-insights.php` — main WordPress plugin file
+- `adanos-market-sentiment-widgets.php` — main WordPress plugin file
 - `assets/` — self-hosted widget JS and CSS
 - `readme.txt` — WordPress.org plugin readme
 - `wordpress-org-assets/` — listing banners, icons, and screenshots

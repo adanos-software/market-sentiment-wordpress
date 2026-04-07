@@ -2,7 +2,7 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-PLUGIN_FILE = REPO_ROOT / "adanos-retail-sentiment-insights.php"
+PLUGIN_FILE = REPO_ROOT / "adanos-market-sentiment-widgets.php"
 README_FILE = REPO_ROOT / "readme.txt"
 ADMIN_CSS_FILE = REPO_ROOT / "assets" / "admin.css"
 WIDGETS_FILE = REPO_ROOT / "assets" / "widgets.js"

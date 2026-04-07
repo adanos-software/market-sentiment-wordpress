@@ -15,7 +15,7 @@ This repository contains the public source for the `Adanos Market Sentiment Widg
 ## What goes to WordPress.org SVN
 
 - `trunk/`
-  - `adanos-retail-sentiment-insights.php`
+  - `adanos-market-sentiment-widgets.php`
   - `assets/`
   - `readme.txt`
   - `uninstall.php`
@@ -48,7 +48,7 @@ The plugin:
 For GitHub releases, the installable ZIP should contain this structure:
 
 - `adanos-market-sentiment-widgets/`
-  - `adanos-retail-sentiment-insights.php`
+  - `adanos-market-sentiment-widgets.php`
   - `assets/`
   - `readme.txt`
   - `uninstall.php`
@@ -67,7 +67,7 @@ For GitHub releases, the installable ZIP should contain this structure:
 
 Until the plugin is actually installed from a `adanos-market-sentiment-widgets` directory or checked from the WordPress.org SVN repo, local `plugin-check` runs should pass the intended slug explicitly:
 
-- `wp plugin check adanos-retail-sentiment-insights --slug=adanos-market-sentiment-widgets`
+- `wp plugin check adanos-market-sentiment-widgets --slug=adanos-market-sentiment-widgets`
 
 ## Validation
 
