@@ -1,10 +1,10 @@
 # WordPress.org Submission Notes
 
-This repository contains the public source for the `Adanos Stock Sentiment Widgets` WordPress plugin by Adanos.
+This repository contains the public source for the `Adanos Market Sentiment Widgets` WordPress plugin by Adanos.
 
 ## Intended plugin slug
 
-- `adanos-stock-sentiment-widgets`
+- `adanos-market-sentiment-widgets`
 
 ## What stays in this GitHub repo
 
@@ -47,7 +47,7 @@ The plugin:
 
 For GitHub releases, the installable ZIP should contain this structure:
 
-- `adanos-stock-sentiment-widgets/`
+- `adanos-market-sentiment-widgets/`
   - `adanos-retail-sentiment-insights.php`
   - `assets/`
   - `readme.txt`
@@ -57,7 +57,7 @@ For GitHub releases, the installable ZIP should contain this structure:
 
 ## Submission flow
 
-1. Submit the plugin through the WordPress.org plugin uploader and request the slug `adanos-stock-sentiment-widgets`.
+1. Submit the plugin through the WordPress.org plugin uploader and request the slug `adanos-market-sentiment-widgets`.
 2. After approval, use the provided SVN repository URL.
 3. Commit the plugin code to `trunk/`.
 4. Commit the listing assets to the SVN root `assets/`.
@@ -65,9 +65,9 @@ For GitHub releases, the installable ZIP should contain this structure:
 
 ## Local preflight note
 
-Until the plugin is actually installed from a `adanos-stock-sentiment-widgets` directory or checked from the WordPress.org SVN repo, local `plugin-check` runs should pass the intended slug explicitly:
+Until the plugin is actually installed from a `adanos-market-sentiment-widgets` directory or checked from the WordPress.org SVN repo, local `plugin-check` runs should pass the intended slug explicitly:
 
-- `wp plugin check adanos-retail-sentiment-insights --slug=adanos-stock-sentiment-widgets`
+- `wp plugin check adanos-retail-sentiment-insights --slug=adanos-market-sentiment-widgets`
 
 ## Validation
 

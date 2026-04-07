@@ -11,8 +11,8 @@ WIDGETS_FILE = REPO_ROOT / "assets" / "widgets.js"
 def test_plugin_uses_distinctive_name_and_text_domain():
     plugin = PLUGIN_FILE.read_text()
 
-    assert "Plugin Name: Adanos Stock Sentiment Widgets" in plugin
-    assert "Text Domain: adanos-stock-sentiment-widgets" in plugin
+    assert "Plugin Name: Adanos Market Sentiment Widgets" in plugin
+    assert "Text Domain: adanos-market-sentiment-widgets" in plugin
     assert "Version: 0.6.0" in plugin
 
 
@@ -35,6 +35,6 @@ def test_widgets_script_avoids_literal_style_html_injection():
 def test_readme_matches_new_brand_and_contributor():
     readme = README_FILE.read_text()
 
-    assert readme.startswith("=== Adanos Stock Sentiment Widgets ===")
+    assert readme.startswith("=== Adanos Market Sentiment Widgets ===")
     assert "Contributors: adanosorg" in readme
     assert "Stable tag: 0.6.0" in readme

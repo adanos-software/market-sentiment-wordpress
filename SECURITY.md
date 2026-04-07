@@ -1,6 +1,6 @@
 # Security
 
-If you discover a security issue in `Adanos Stock Sentiment Widgets for WordPress`, please do not open a public GitHub issue with exploit details.
+If you discover a security issue in `Adanos Market Sentiment Widgets for WordPress`, please do not open a public GitHub issue with exploit details.
 
 Instead, contact:
 
