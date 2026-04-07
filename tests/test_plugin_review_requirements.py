@@ -13,7 +13,8 @@ def test_plugin_uses_distinctive_name_and_text_domain():
 
     assert "Plugin Name: Adanos Market Sentiment Widgets" in plugin
     assert "Text Domain: adanos-market-sentiment-widgets" in plugin
-    assert "Version: 0.6.0" in plugin
+    assert "Version: 0.6.1" in plugin
+    assert PLUGIN_FILE.name == "adanos-market-sentiment-widgets.php"
 
 
 def test_plugin_no_longer_outputs_inline_admin_style_block():
@@ -23,6 +24,7 @@ def test_plugin_no_longer_outputs_inline_admin_style_block():
     assert "admin_enqueue_scripts" in plugin
     assert "assets/admin.css" in plugin
     assert ADMIN_CSS_FILE.is_file()
+    assert "wp_add_privacy_policy_content" in plugin
 
 
 def test_widgets_script_avoids_literal_style_html_injection():
@@ -37,4 +39,4 @@ def test_readme_matches_new_brand_and_contributor():
 
     assert readme.startswith("=== Adanos Market Sentiment Widgets ===")
     assert "Contributors: adanosorg" in readme
-    assert "Stable tag: 0.6.0" in readme
+    assert "Stable tag: 0.6.1" in readme

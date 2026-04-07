@@ -1,6 +1,6 @@
 <?php
 /**
- * Uninstall Adanos Retail Sentiment Insights.
+ * Uninstall Adanos Market Sentiment Widgets.
  */
 
 if (!defined('WP_UNINSTALL_PLUGIN')) {

@@ -6,6 +6,8 @@ It lets you embed live stock sentiment cards, ticker tapes, top movers tables, a
 
 The plugin keeps the frontend widget code self-hosted inside WordPress, sends requests server-side, and caches API responses in WordPress transients so normal sites can stay within modest API limits.
 
+It also registers suggested privacy-policy text in WordPress so site owners can disclose the external Adanos service in their privacy policy page.
+
 ## What it adds
 
 - Single-stock sentiment widgets with buzz, bullish percentage, trend, and activity

@@ -4,7 +4,7 @@ Tags: stocks, finance, sentiment, shortcode, widget
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 0.6.0
+Stable tag: 0.6.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -201,7 +201,14 @@ The plugin also stores cached API responses in WordPress transients to reduce re
 
 The plugin does not track visitors, set its own analytics cookies, or send visitor-entered form data to Adanos.
 
+The plugin also adds suggested privacy-policy text in WordPress so site owners can include the external-service disclosure in their privacy policy page.
+
 == Changelog ==
+
+= 0.6.1 =
+
+* Added suggested privacy-policy text for the external Adanos service
+* Aligned the main plugin filename and upload package naming with the reserved slug
 
 = 0.6.0 =
 

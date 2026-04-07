@@ -3,7 +3,7 @@
  * Plugin Name: Adanos Market Sentiment Widgets
  * Plugin URI: https://github.com/adanos-software/market-sentiment-wordpress
  * Description: Embed self-hosted stock sentiment widgets and shortcodes for WordPress, powered by Adanos market data.
- * Version: 0.6.0
+ * Version: 0.6.1
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author: Adanos Software
@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('ADANOS_RSI_VERSION', '0.6.0');
+define('ADANOS_RSI_VERSION', '0.6.1');
 define('ADANOS_RSI_OPTION', 'adanos_rsi_options');
 define('ADANOS_RSI_CACHE_INDEX_OPTION', 'adanos_rsi_cache_keys');
 define('ADANOS_RSI_TRANSIENT_PREFIX', 'adanos_rsi_');
@@ -95,6 +95,24 @@ function adanos_rsi_register_settings() {
 }
 
 add_action('admin_init', 'adanos_rsi_register_settings');
+
+function adanos_rsi_register_privacy_policy_content() {
+    if (!function_exists('wp_add_privacy_policy_content')) {
+        return;
+    }
+
+    $content =
+        '<p>' . esc_html__('Adanos Market Sentiment Widgets fetches stock sentiment data from the Adanos Finance API when site owners use the plugin shortcodes or widgets.', 'adanos-market-sentiment-widgets') . '</p>' .
+        '<p>' . esc_html__('To provide this functionality, the plugin sends the requested stock ticker, source selection, lookback window, your site server IP address, and the configured Adanos API key to the Adanos Finance API. No visitor-entered form data is sent directly to Adanos.', 'adanos-market-sentiment-widgets') . '</p>' .
+        '<p>' . esc_html__('The plugin stores the Adanos API key in the WordPress options table and stores cached API responses in WordPress transients to reduce repeated requests.', 'adanos-market-sentiment-widgets') . '</p>';
+
+    wp_add_privacy_policy_content(
+        __('Adanos Market Sentiment Widgets', 'adanos-market-sentiment-widgets'),
+        wp_kses_post($content)
+    );
+}
+
+add_action('admin_init', 'adanos_rsi_register_privacy_policy_content');
 
 function adanos_rsi_render_api_key_field() {
     $options = adanos_rsi_get_options();
