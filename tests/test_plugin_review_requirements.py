@@ -5,6 +5,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 PLUGIN_FILE = REPO_ROOT / "adanos-retail-sentiment-insights.php"
 README_FILE = REPO_ROOT / "readme.txt"
 ADMIN_CSS_FILE = REPO_ROOT / "assets" / "admin.css"
+WIDGETS_FILE = REPO_ROOT / "assets" / "widgets.js"
 
 
 def test_plugin_uses_distinctive_name_and_text_domain():
@@ -22,6 +23,13 @@ def test_plugin_no_longer_outputs_inline_admin_style_block():
     assert "admin_enqueue_scripts" in plugin
     assert "assets/admin.css" in plugin
     assert ADMIN_CSS_FILE.is_file()
+
+
+def test_widgets_script_avoids_literal_style_html_injection():
+    widgets = WIDGETS_FILE.read_text()
+
+    assert "<style>" not in widgets
+    assert "document.createElement('style')" in widgets
 
 
 def test_readme_matches_new_brand_and_contributor():

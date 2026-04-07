@@ -180,6 +180,14 @@
             '.up{color:var(--positive);}.down{color:var(--negative);}.flat{color:var(--neutral);}';
     }
 
+    function renderShadowContent(shadowRoot, css, html) {
+        shadowRoot.innerHTML = html;
+
+        var style = document.createElement('style');
+        style.textContent = css;
+        shadowRoot.prepend(style);
+    }
+
     function createWidgetClass(observed, render, load) {
         function Widget() {
             return Reflect.construct(HTMLElement, [], Widget);
@@ -214,8 +222,9 @@
         function () {
             var theme = this._attr('theme', 'light');
             var source = this._attr('source', 'reddit');
-            this.shadowRoot.innerHTML =
-                '<style>' + themeCss(theme) +
+            renderShadowContent(
+                this.shadowRoot,
+                themeCss(theme) +
                 '.header{display:flex;justify-content:space-between;align-items:flex-start;padding:18px 20px;border-bottom:1px solid var(--border);gap:12px;}' +
                 '.ticker{font-size:28px;font-weight:700;line-height:1;}' +
                 '.company{font-size:14px;margin-top:6px;color:var(--muted);}' +
@@ -226,12 +235,12 @@
                 '.value{font-size:24px;font-weight:700;line-height:1.1;}' +
                 '.spark{padding:12px 20px;border-top:1px solid var(--border);background:var(--bg);}' +
                 '.summary{padding:16px 20px;border-top:1px solid var(--border);background:var(--bg-alt);font-size:14px;color:var(--muted);line-height:1.6;}' +
-                '@media (max-width:520px){.grid{grid-template-columns:1fr;}.ticker{font-size:24px;}}' +
-                '</style>' +
+                '@media (max-width:520px){.grid{grid-template-columns:1fr;}.ticker{font-size:24px;}}',
                 '<div class="card">' +
                 '<div class="header"><div><div class="ticker mono">' + escapeHtml(this._attr('ticker', '')) + '</div><div class="company" id="company">Loading…</div></div><div class="badge">' + escapeHtml(source.toUpperCase()) + ' Sentiment</div></div>' +
                 '<div id="body"><div class="status">Loading sentiment data…</div></div>' +
-                '</div>';
+                '</div>'
+            );
         },
         function () {
             var self = this;
@@ -287,17 +296,18 @@
         ['source', 'theme', 'limit', 'speed'],
         function () {
             var theme = this._attr('theme', 'light');
-            this.shadowRoot.innerHTML =
-                '<style>' + themeCss(theme) +
+            renderShadowContent(
+                this.shadowRoot,
+                themeCss(theme) +
                 '.tape{overflow:hidden;background:var(--bg);border:1px solid var(--border);border-radius:8px;height:52px;display:flex;align-items:center;}' +
                 '.inner{display:flex;gap:28px;align-items:center;padding:0 18px;white-space:nowrap;width:max-content;}' +
                 '.item{display:flex;gap:8px;align-items:center;font-size:13px;}' +
                 '.sym{font-weight:700;}.buzz{color:var(--muted);}.dot{width:6px;height:6px;border-radius:999px;display:inline-block;}.dot.positive{background:var(--positive);}.dot.negative{background:var(--negative);}.dot.neutral{background:var(--neutral);}' +
                 '.sep{width:1px;height:18px;background:var(--border);}' +
                 '@keyframes scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}' +
-                '@media (prefers-reduced-motion: reduce){.inner{animation:none !important;}}' +
-                '</style>' +
-                '<div class="tape"><div class="inner status">Loading sentiment data…</div></div>';
+                '@media (prefers-reduced-motion: reduce){.inner{animation:none !important;}}',
+                '<div class="tape"><div class="inner status">Loading sentiment data…</div></div>'
+            );
         },
         function () {
             var self = this;
@@ -346,8 +356,9 @@
         function () {
             var theme = this._attr('theme', 'light');
             var source = this._attr('source', 'reddit');
-            this.shadowRoot.innerHTML =
-                '<style>' + themeCss(theme) +
+            renderShadowContent(
+                this.shadowRoot,
+                themeCss(theme) +
                 '.card{background:var(--bg);border:1px solid var(--border);border-radius:14px;overflow:hidden;}' +
                 '.header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border);gap:16px;}' +
                 '.title{font-size:16px;font-weight:700;}.badge{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);}' +
@@ -357,9 +368,9 @@
                 'tr:last-child td{border-bottom:none;}.rank{width:34px;color:var(--muted);}.ticker{font-weight:700;}.company{color:var(--muted);}' +
                 '.sent{display:flex;align-items:center;gap:8px;}.bar{flex:1;max-width:64px;height:4px;background:var(--border);border-radius:999px;overflow:hidden;}.fill{height:100%;}.fill.positive{background:var(--positive);}.fill.negative{background:var(--negative);}.fill.neutral{background:var(--neutral);}' +
                 '.spark svg{display:block;}.logo{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;background:var(--chip);border:1px solid var(--border);font-size:10px;margin-right:8px;color:var(--muted);}' +
-                '@media (max-width:480px){th:nth-child(3),td:nth-child(3){display:none;}}' +
-                '</style>' +
-                '<div class="card"><div class="header"><div class="title">Top Movers</div><div class="badge">' + escapeHtml(source.toUpperCase()) + ' Sentiment</div></div><div class="wrap"><table><thead><tr><th>#</th><th>Ticker</th><th>Company</th><th>Buzz</th><th>Bullish</th><th>Trend</th></tr></thead><tbody id="tbody"><tr><td colspan="6" class="status">Loading sentiment data…</td></tr></tbody></table></div></div>';
+                '@media (max-width:480px){th:nth-child(3),td:nth-child(3){display:none;}}',
+                '<div class="card"><div class="header"><div class="title">Top Movers</div><div class="badge">' + escapeHtml(source.toUpperCase()) + ' Sentiment</div></div><div class="wrap"><table><thead><tr><th>#</th><th>Ticker</th><th>Company</th><th>Buzz</th><th>Bullish</th><th>Trend</th></tr></thead><tbody id="tbody"><tr><td colspan="6" class="status">Loading sentiment data…</td></tr></tbody></table></div></div>'
+            );
         },
         function () {
             var self = this;
