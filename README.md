@@ -1,6 +1,6 @@
-# Market Sentiment for WordPress
+# Adanos Stock Sentiment Widgets for WordPress
 
-`Market Sentiment` is a WordPress plugin by [Adanos](https://adanos.org/) for finance publishers, investor blogs, and stock-focused communities.
+`Adanos Stock Sentiment Widgets` is a WordPress plugin by [Adanos](https://adanos.org/) for finance publishers, investor blogs, and stock-focused communities.
 
 It lets you embed live stock sentiment cards, ticker tapes, top movers tables, and inline text snippets directly inside WordPress posts and pages.
 
@@ -26,9 +26,9 @@ The plugin keeps the frontend widget code self-hosted inside WordPress, sends re
 
 ## Installation
 
-1. Upload the plugin files to `wp-content/plugins/market-sentiment`.
-2. Activate `Market Sentiment` in WordPress admin.
-3. Open `Settings > Market Sentiment`.
+1. Upload the plugin files to `wp-content/plugins/adanos-stock-sentiment-widgets`.
+2. Activate `Adanos Stock Sentiment Widgets` in WordPress admin.
+3. Open `Settings > Adanos Stock Sentiment Widgets`.
 4. Add your API key from [adanos.org/reddit-stock-sentiment#api-form](https://adanos.org/reddit-stock-sentiment#api-form).
 5. Start with the default cache TTL of `86400` seconds for daily updates on the free plan.
 6. Insert shortcodes into posts, pages, or blocks.

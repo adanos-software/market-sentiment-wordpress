@@ -1,10 +1,10 @@
-=== Market Sentiment ===
-Contributors: adanos
+=== Adanos Stock Sentiment Widgets ===
+Contributors: adanosorg
 Tags: stocks, finance, sentiment, shortcode, widget
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 0.5.5
+Stable tag: 0.6.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ Embed self-hosted stock sentiment widgets and shortcodes for WordPress, powered 
 
 == Description ==
 
-Market Sentiment helps finance publishers, bloggers, and investor communities embed self-hosted stock sentiment widgets directly into WordPress content.
+Adanos Stock Sentiment Widgets helps finance publishers, bloggers, and investor communities embed self-hosted stock sentiment widgets directly into WordPress content.
 
 The plugin ships the widget code locally inside WordPress and proxies Adanos API requests through WordPress REST endpoints. Responses are cached with WordPress transients, which means the cache lives in the database by default when no external object cache is active. The default cache TTL is 24 hours so the free 250 requests/month API plan can support daily refreshes without constant re-fetching.
 
@@ -35,8 +35,8 @@ Supported sources:
 == Installation ==
 
 1. Upload the plugin folder to `/wp-content/plugins/`.
-2. Activate **Market Sentiment** in the WordPress admin.
-3. Open **Settings > Market Sentiment** and add your Adanos Finance API key.
+2. Activate **Adanos Stock Sentiment Widgets** in the WordPress admin.
+3. Open **Settings > Adanos Stock Sentiment Widgets** and add your Adanos Finance API key.
 4. If you do not have a key yet, get one at https://adanos.org/reddit-stock-sentiment#api-form
 5. Use the shortcodes in posts, pages, or widget areas.
 
@@ -195,13 +195,19 @@ Detailed trending text:
 
 == Privacy ==
 
-Market Sentiment stores your Adanos API key in the WordPress options table and uses it only for server-side API requests.
+Adanos Stock Sentiment Widgets stores your Adanos API key in the WordPress options table and uses it only for server-side API requests.
 
 The plugin also stores cached API responses in WordPress transients to reduce repeated requests and improve page performance. On most standard WordPress installs, those cached responses are stored in the database unless an external object cache is active.
 
 The plugin does not track visitors, set its own analytics cookies, or send visitor-entered form data to Adanos.
 
 == Changelog ==
+
+= 0.6.0 =
+
+* Renamed the plugin to `Adanos Stock Sentiment Widgets` and requested a new distinctive WordPress.org slug
+* Moved settings-page CSS to an enqueued admin stylesheet instead of inline markup
+* Updated contributor metadata for the current WordPress.org owner
 
 = 0.5.5 =
 
@@ -221,7 +227,7 @@ The plugin does not track visitors, set its own analytics cookies, or send visit
 
 = 0.5.2 =
 
-* Renamed the visible plugin title to `Market Sentiment`
+* Renamed the plugin branding to `Adanos Stock Sentiment Widgets`
 * Kept Adanos as the publisher and external data provider in the readme and plugin metadata
 
 = 0.5.1 =

@@ -1,0 +1,32 @@
+from pathlib import Path
+
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+PLUGIN_FILE = REPO_ROOT / "adanos-retail-sentiment-insights.php"
+README_FILE = REPO_ROOT / "readme.txt"
+ADMIN_CSS_FILE = REPO_ROOT / "assets" / "admin.css"
+
+
+def test_plugin_uses_distinctive_name_and_text_domain():
+    plugin = PLUGIN_FILE.read_text()
+
+    assert "Plugin Name: Adanos Stock Sentiment Widgets" in plugin
+    assert "Text Domain: adanos-stock-sentiment-widgets" in plugin
+    assert "Version: 0.6.0" in plugin
+
+
+def test_plugin_no_longer_outputs_inline_admin_style_block():
+    plugin = PLUGIN_FILE.read_text()
+
+    assert "<style>" not in plugin
+    assert "admin_enqueue_scripts" in plugin
+    assert "assets/admin.css" in plugin
+    assert ADMIN_CSS_FILE.is_file()
+
+
+def test_readme_matches_new_brand_and_contributor():
+    readme = README_FILE.read_text()
+
+    assert readme.startswith("=== Adanos Stock Sentiment Widgets ===")
+    assert "Contributors: adanosorg" in readme
+    assert "Stable tag: 0.6.0" in readme
