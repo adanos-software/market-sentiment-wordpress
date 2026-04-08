@@ -4,7 +4,7 @@ Tags: stocks, finance, sentiment, shortcode, widget
 Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 0.6.1
+Stable tag: 0.6.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,7 +37,7 @@ Supported sources:
 1. Upload the plugin folder to `/wp-content/plugins/`.
 2. Activate **Adanos Market Sentiment Widgets** in the WordPress admin.
 3. Open **Settings > Adanos Market Sentiment Widgets** and add your Adanos Finance API key.
-4. If you do not have a key yet, get one at https://adanos.org/reddit-stock-sentiment#api-form
+4. If you do not have a key yet, get one at <a href="https://adanos.org/reddit-stock-sentiment#api-form">adanos.org/reddit-stock-sentiment#api-form</a>
 5. Use the shortcodes in posts, pages, or widget areas.
 
 == Screenshots ==
@@ -62,16 +62,16 @@ It does not send visitor-level personal data from the frontend directly to Adano
 Service provider:
 
 * Adanos Software GmbH
-* Website: https://adanos.org/
-* API docs: https://api.adanos.org/docs
-* Privacy Policy: https://adanos.org/privacy-policy
-* Terms of Service: https://adanos.org/terms
+* Website: <a href="https://adanos.org/">adanos.org</a>
+* API docs: <a href="https://api.adanos.org/docs">api.adanos.org/docs</a>
+* Privacy Policy: <a href="https://adanos.org/privacy-policy">adanos.org/privacy-policy</a>
+* Terms of Service: <a href="https://adanos.org/terms">adanos.org/terms</a>
 
 == Frequently Asked Questions ==
 
 = Do I need an API key? =
 
-Yes. The plugin fetches live sentiment data from the Adanos Finance API through a local WordPress proxy. You can get an API key at https://adanos.org/reddit-stock-sentiment#api-form
+Yes. The plugin fetches live sentiment data from the Adanos Finance API through a local WordPress proxy. You can get an API key at <a href="https://adanos.org/reddit-stock-sentiment#api-form">adanos.org/reddit-stock-sentiment#api-form</a>
 
 = What cache setting should I use on a free API key? =
 
@@ -148,25 +148,25 @@ Additional fields:
 
 = What formats can I use? =
 
-`[adanos_summary]` supports:
+For `[adanos_summary]`:
 
 * `sentence`
 * `brief`
 * `explanation`
 
-`[adanos_trending_text]` supports:
+For `[adanos_trending_text]`:
 
 * `sentence`
 * `list`
 * `detailed`
 
-`[adanos_ticker_tape]` speed supports:
+For `[adanos_ticker_tape]` speed:
 
 * `slow`
 * `normal`
 * `fast`
 
-`[adanos]` and widget shortcodes support:
+For widget themes:
 
 * `theme="light"`
 * `theme="dark"`
@@ -204,6 +204,11 @@ The plugin does not track visitors, set its own analytics cookies, or send visit
 The plugin also adds suggested privacy-policy text in WordPress so site owners can include the external-service disclosure in their privacy policy page.
 
 == Changelog ==
+
+= 0.6.2 =
+
+* Switched key external-service URLs in the WordPress.org readme to explicit clickable links
+* Simplified the readme FAQ formatting so WordPress.org renders the answer blocks cleanly
 
 = 0.6.1 =
 

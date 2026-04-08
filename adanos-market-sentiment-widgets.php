@@ -3,7 +3,7 @@
  * Plugin Name: Adanos Market Sentiment Widgets
  * Plugin URI: https://github.com/adanos-software/market-sentiment-wordpress
  * Description: Embed self-hosted stock sentiment widgets and shortcodes for WordPress, powered by Adanos market data.
- * Version: 0.6.1
+ * Version: 0.6.2
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author: Adanos Software
@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('ADANOS_RSI_VERSION', '0.6.1');
+define('ADANOS_RSI_VERSION', '0.6.2');
 define('ADANOS_RSI_OPTION', 'adanos_rsi_options');
 define('ADANOS_RSI_CACHE_INDEX_OPTION', 'adanos_rsi_cache_keys');
 define('ADANOS_RSI_TRANSIENT_PREFIX', 'adanos_rsi_');

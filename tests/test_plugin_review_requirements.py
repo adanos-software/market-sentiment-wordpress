@@ -13,7 +13,7 @@ def test_plugin_uses_distinctive_name_and_text_domain():
 
     assert "Plugin Name: Adanos Market Sentiment Widgets" in plugin
     assert "Text Domain: adanos-market-sentiment-widgets" in plugin
-    assert "Version: 0.6.1" in plugin
+    assert "Version: 0.6.2" in plugin
     assert PLUGIN_FILE.name == "adanos-market-sentiment-widgets.php"
 
 
@@ -39,4 +39,8 @@ def test_readme_matches_new_brand_and_contributor():
 
     assert readme.startswith("=== Adanos Market Sentiment Widgets ===")
     assert "Contributors: adanosorg" in readme
-    assert "Stable tag: 0.6.1" in readme
+    assert "Stable tag: 0.6.2" in readme
+    assert '<a href="https://adanos.org/reddit-stock-sentiment#api-form">' in readme
+    assert '<a href="https://api.adanos.org/docs">' in readme
+    assert '<a href="https://adanos.org/privacy-policy">' in readme
+    assert '<a href="https://adanos.org/terms">' in readme
