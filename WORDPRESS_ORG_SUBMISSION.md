@@ -61,7 +61,7 @@ For GitHub releases, the installable ZIP should contain this structure:
 2. After approval, use the provided SVN repository URL.
 3. Commit the plugin code to `trunk/`.
 4. Commit the listing assets to the SVN root `assets/`.
-5. Create the first SVN tag, for example `tags/0.6.0/`.
+5. Create the first SVN tag, for example `tags/0.6.1/`.
 
 ## Local preflight note
 
@@ -73,7 +73,7 @@ Until the plugin is actually installed from a `adanos-market-sentiment-widgets` 
 
 Validated before release with:
 
-- `python3 -m pytest tests/test_wordpress_retail_sentiment_plugin.py -q`
+- `python3 -m pytest tests/ -q`
 - PHP lint inside `wordpress:cli-php8.2`
 
 The parent monorepo currently has unrelated failing tests during full collection, so plugin-specific validation is the authoritative check for this package.

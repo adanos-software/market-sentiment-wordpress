@@ -91,7 +91,7 @@ This plugin uses the Adanos Finance API:
 
 Validated locally before publishing:
 
-- targeted plugin tests in the main workspace: `python3 -m pytest tests/test_wordpress_retail_sentiment_plugin.py -q`
+- plugin tests in this repository: `python3 -m pytest tests/ -q`
 - PHP syntax lint in `wordpress:cli-php8.2`
 
 Note: the parent monorepo currently has unrelated failing tests during full collection, so this repo documents the plugin-specific checks that were run for this package.
