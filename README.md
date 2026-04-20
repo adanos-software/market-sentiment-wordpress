@@ -1,10 +1,12 @@
-# Market Sentiment for WordPress
+# Adanos Market Sentiment Widgets for WordPress
 
-`Market Sentiment` is a WordPress plugin by [Adanos](https://adanos.org/) for finance publishers, investor blogs, and stock-focused communities.
+`Adanos Market Sentiment Widgets` is a WordPress plugin by [Adanos](https://adanos.org/) for finance publishers, investor blogs, and stock-focused communities.
 
 It lets you embed live stock sentiment cards, ticker tapes, top movers tables, and inline text snippets directly inside WordPress posts and pages.
 
 The plugin keeps the frontend widget code self-hosted inside WordPress, sends requests server-side, and caches API responses in WordPress transients so normal sites can stay within modest API limits.
+
+It also registers suggested privacy-policy text in WordPress so site owners can disclose the external Adanos service in their privacy policy page.
 
 ## What it adds
 
@@ -26,9 +28,9 @@ The plugin keeps the frontend widget code self-hosted inside WordPress, sends re
 
 ## Installation
 
-1. Upload the plugin files to `wp-content/plugins/market-sentiment`.
-2. Activate `Market Sentiment` in WordPress admin.
-3. Open `Settings > Market Sentiment`.
+1. Upload the plugin files to `wp-content/plugins/adanos-market-sentiment-widgets`.
+2. Activate `Adanos Market Sentiment Widgets` in WordPress admin.
+3. Open `Settings > Adanos Market Sentiment Widgets`.
 4. Add your API key from [adanos.org/reddit-stock-sentiment#api-form](https://adanos.org/reddit-stock-sentiment#api-form).
 5. Start with the default cache TTL of `86400` seconds for daily updates on the free plan.
 6. Insert shortcodes into posts, pages, or blocks.
@@ -79,7 +81,7 @@ This plugin uses the Adanos Finance API:
 
 ## Repository contents
 
-- `adanos-retail-sentiment-insights.php` — main WordPress plugin file
+- `adanos-market-sentiment-widgets.php` — main WordPress plugin file
 - `assets/` — self-hosted widget JS and CSS
 - `readme.txt` — WordPress.org plugin readme
 - `wordpress-org-assets/` — listing banners, icons, and screenshots
@@ -89,7 +91,7 @@ This plugin uses the Adanos Finance API:
 
 Validated locally before publishing:
 
-- targeted plugin tests in the main workspace: `python3 -m pytest tests/test_wordpress_retail_sentiment_plugin.py -q`
+- plugin tests in this repository: `python3 -m pytest tests/ -q`
 - PHP syntax lint in `wordpress:cli-php8.2`
 
 Note: the parent monorepo currently has unrelated failing tests during full collection, so this repo documents the plugin-specific checks that were run for this package.

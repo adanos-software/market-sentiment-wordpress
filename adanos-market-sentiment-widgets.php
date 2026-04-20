@@ -1,23 +1,23 @@
 <?php
 /**
- * Plugin Name: Market Sentiment
- * Plugin URI: https://adanos.org/
- * Description: Embed self-hosted stock sentiment widgets and shortcodes for WordPress, powered by Adanos.
- * Version: 0.5.4
+ * Plugin Name: Adanos Market Sentiment Widgets
+ * Plugin URI: https://github.com/adanos-software/market-sentiment-wordpress
+ * Description: Embed self-hosted stock sentiment widgets and shortcodes for WordPress, powered by Adanos market data.
+ * Version: 0.6.3
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author: Adanos Software
  * Author URI: https://adanos.org/
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: adanos-retail-sentiment-insights
+ * Text Domain: adanos-market-sentiment-widgets
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-define('ADANOS_RSI_VERSION', '0.5.4');
+define('ADANOS_RSI_VERSION', '0.6.3');
 define('ADANOS_RSI_OPTION', 'adanos_rsi_options');
 define('ADANOS_RSI_CACHE_INDEX_OPTION', 'adanos_rsi_cache_keys');
 define('ADANOS_RSI_TRANSIENT_PREFIX', 'adanos_rsi_');
@@ -72,14 +72,14 @@ function adanos_rsi_register_settings() {
         'adanos_rsi_api_section',
         '',
         function () {
-            echo '<p class="adanos-rsi-section-copy">' . esc_html__('Add your Adanos API key once and WordPress will handle the cached requests for every widget and shortcode on the site.', 'adanos-retail-sentiment-insights') . '</p>';
+            echo '<p class="adanos-rsi-section-copy">' . esc_html__('Add your Adanos API key once and WordPress will handle the cached requests for every widget and shortcode on the site.', 'adanos-market-sentiment-widgets') . '</p>';
         },
         'adanos-rsi'
     );
 
     add_settings_field(
         'api_key',
-        __('API Key', 'adanos-retail-sentiment-insights'),
+        __('API Key', 'adanos-market-sentiment-widgets'),
         'adanos_rsi_render_api_key_field',
         'adanos-rsi',
         'adanos_rsi_api_section'
@@ -87,7 +87,7 @@ function adanos_rsi_register_settings() {
 
     add_settings_field(
         'cache_ttl',
-        __('Cache TTL (seconds)', 'adanos-retail-sentiment-insights'),
+        __('Cache TTL (seconds)', 'adanos-market-sentiment-widgets'),
         'adanos_rsi_render_cache_field',
         'adanos-rsi',
         'adanos_rsi_api_section'
@@ -96,13 +96,31 @@ function adanos_rsi_register_settings() {
 
 add_action('admin_init', 'adanos_rsi_register_settings');
 
+function adanos_rsi_register_privacy_policy_content() {
+    if (!function_exists('wp_add_privacy_policy_content')) {
+        return;
+    }
+
+    $content =
+        '<p>' . esc_html__('Adanos Market Sentiment Widgets fetches stock sentiment data from the Adanos Finance API when site owners use the plugin shortcodes or widgets.', 'adanos-market-sentiment-widgets') . '</p>' .
+        '<p>' . esc_html__('To provide this functionality, the plugin sends the requested stock ticker, source selection, lookback window, your site server IP address, and the configured Adanos API key to the Adanos Finance API. No visitor-entered form data is sent directly to Adanos.', 'adanos-market-sentiment-widgets') . '</p>' .
+        '<p>' . esc_html__('The plugin stores the Adanos API key in the WordPress options table and stores cached API responses in WordPress transients to reduce repeated requests.', 'adanos-market-sentiment-widgets') . '</p>';
+
+    wp_add_privacy_policy_content(
+        __('Adanos Market Sentiment Widgets', 'adanos-market-sentiment-widgets'),
+        wp_kses_post($content)
+    );
+}
+
+add_action('admin_init', 'adanos_rsi_register_privacy_policy_content');
+
 function adanos_rsi_render_api_key_field() {
     $options = adanos_rsi_get_options();
     ?>
     <input type="password" class="regular-text" name="<?php echo esc_attr(ADANOS_RSI_OPTION); ?>[api_key]" value="<?php echo esc_attr($options['api_key']); ?>" autocomplete="off" />
     <p class="description">
-        <?php echo esc_html__('Used by the local WordPress proxy for cached requests to the Adanos Finance API.', 'adanos-retail-sentiment-insights'); ?>
-        <a href="https://adanos.org/reddit-stock-sentiment#api-form" target="_blank" rel="noopener noreferrer"><?php echo esc_html__('Get an API key', 'adanos-retail-sentiment-insights'); ?></a>
+        <?php echo esc_html__('Used by the local WordPress proxy for cached requests to the Adanos Finance API.', 'adanos-market-sentiment-widgets'); ?>
+        <a href="https://adanos.org/reddit-stock-sentiment#api-form" target="_blank" rel="noopener noreferrer"><?php echo esc_html__('Get an API key', 'adanos-market-sentiment-widgets'); ?></a>
     </p>
     <?php
 }
@@ -111,14 +129,14 @@ function adanos_rsi_render_cache_field() {
     $options = adanos_rsi_get_options();
     ?>
     <input type="number" class="small-text" min="60" max="604800" step="3600" name="<?php echo esc_attr(ADANOS_RSI_OPTION); ?>[cache_ttl]" value="<?php echo esc_attr($options['cache_ttl']); ?>" />
-    <p class="description"><?php echo esc_html__('Default is 86400 seconds (24 hours), which keeps daily updates practical on the free 250 requests/month API plan. Responses are cached in WordPress transients, which default to the database when no object cache is active.', 'adanos-retail-sentiment-insights'); ?></p>
+    <p class="description"><?php echo esc_html__('Default is 86400 seconds (24 hours), which keeps daily updates practical on the free 250 requests/month API plan. Responses are cached in WordPress transients, which default to the database when no object cache is active.', 'adanos-market-sentiment-widgets'); ?></p>
     <?php
 }
 
 function adanos_rsi_add_settings_page() {
     add_options_page(
-        __('Market Sentiment', 'adanos-retail-sentiment-insights'),
-        __('Market Sentiment', 'adanos-retail-sentiment-insights'),
+        __('Adanos Market Sentiment Widgets', 'adanos-market-sentiment-widgets'),
+        __('Adanos Market Sentiment Widgets', 'adanos-market-sentiment-widgets'),
         'manage_options',
         'adanos-rsi',
         'adanos_rsi_render_settings_page'
@@ -127,84 +145,35 @@ function adanos_rsi_add_settings_page() {
 
 add_action('admin_menu', 'adanos_rsi_add_settings_page');
 
+function adanos_rsi_admin_enqueue_assets($hook_suffix) {
+    if ('settings_page_adanos-rsi' !== $hook_suffix) {
+        return;
+    }
+
+    wp_enqueue_style(
+        'adanos-rsi-admin',
+        plugins_url('assets/admin.css', __FILE__),
+        array(),
+        ADANOS_RSI_VERSION
+    );
+}
+
+add_action('admin_enqueue_scripts', 'adanos_rsi_admin_enqueue_assets');
+
 function adanos_rsi_render_settings_page() {
     $cache_keys = adanos_rsi_get_cache_keys();
     ?>
     <div class="wrap">
-        <style>
-            .adanos-rsi-admin { max-width: 1320px; padding-right: 14px; }
-            .adanos-rsi-hero { margin: 18px 0 20px; padding: 20px 24px; background: linear-gradient(135deg, #fcfbf5, #f5f4ea); border: 1px solid #d7d3b2; border-radius: 16px; }
-            .adanos-rsi-hero h1 { margin: 0 0 8px; font-size: 30px; line-height: 1.1; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-            .adanos-rsi-hero-brand { font-size: 15px; font-weight: 500; color: #7a7f87; }
-            .adanos-rsi-hero p { margin: 0; max-width: 900px; color: #50575e; font-size: 14px; line-height: 1.55; }
-            .adanos-rsi-layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 16px; align-items: start; }
-            .adanos-rsi-main, .adanos-rsi-sidebar { display: grid; gap: 16px; }
-            .adanos-rsi-card { background: #fff; border: 1px solid #dcdcde; border-radius: 14px; padding: 18px; box-shadow: 0 1px 0 rgba(0,0,0,.02); }
-            .adanos-rsi-card > :last-child { margin-bottom: 0; }
-            .adanos-rsi-card h2 { margin: 0 0 12px; font-size: 19px; line-height: 1.3; }
-            .adanos-rsi-card h3 { margin: 0 0 8px; font-size: 15px; line-height: 1.35; }
-            .adanos-rsi-card p { margin: 0 0 10px; color: #50575e; line-height: 1.5; }
-            .adanos-rsi-muted { color: #646970; }
-            .adanos-rsi-grid { display: grid; gap: 12px; }
-            .adanos-rsi-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-            .adanos-rsi-snippet { display: block; padding: 10px 12px; background: #f6f7f7; border: 1px solid #e5e7eb; border-radius: 8px; overflow-x: auto; white-space: normal; word-break: break-word; line-height: 1.45; }
-            .adanos-rsi-shortcode { display: grid; gap: 10px; align-content: start; padding: 14px; border: 1px solid #e5e7eb; border-radius: 12px; background: #fcfcfd; }
-            .adanos-rsi-shortcode ul, .adanos-rsi-steps, .adanos-rsi-bullet-list { margin: 0; padding-left: 18px; }
-            .adanos-rsi-shortcode ul { padding-left: 0; list-style: none; display: grid; gap: 6px; }
-            .adanos-rsi-shortcode li, .adanos-rsi-steps li, .adanos-rsi-bullet-list li { margin: 0 0 6px; line-height: 1.45; }
-            .adanos-rsi-shortcode li { margin: 0; }
-            .adanos-rsi-bullet-list { list-style: disc; }
-            .adanos-rsi-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-            .adanos-rsi-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; border-radius: 999px; background: #f6f7f7; border: 1px solid #dcdcde; font-size: 12px; }
-            .adanos-rsi-chip code { background: transparent; padding: 0; }
-            .adanos-rsi-steps { display: grid; gap: 10px; padding-left: 0; list-style: none; counter-reset: adanos-steps; }
-            .adanos-rsi-steps li { display: flex; gap: 12px; align-items: flex-start; margin: 0; }
-            .adanos-rsi-steps li::before { counter-increment: adanos-steps; content: counter(adanos-steps); display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 999px; background: #1d4ed8; color: #fff; font-weight: 600; flex: 0 0 26px; }
-            .adanos-rsi-stat { padding: 14px; border: 1px solid #e5e7eb; border-radius: 12px; background: #fcfcfd; }
-            .adanos-rsi-stat-label { display: block; margin-bottom: 6px; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: #646970; }
-            .adanos-rsi-stat-value { font-size: 26px; font-weight: 700; line-height: 1.1; }
-            .adanos-rsi-section-copy { margin: 0 0 14px; color: #50575e; max-width: 720px; }
-            .adanos-rsi-form-wrap form { margin: 0; }
-            .adanos-rsi-form-wrap .form-table { margin: 0 0 14px; border-collapse: separate; border-spacing: 0; }
-            .adanos-rsi-form-wrap .form-table tbody { display: grid; gap: 14px; }
-            .adanos-rsi-form-wrap .form-table tr { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 18px; align-items: start; padding-top: 14px; border-top: 1px solid #eef0f1; }
-            .adanos-rsi-form-wrap .form-table tr:first-child { padding-top: 0; border-top: 0; }
-            .adanos-rsi-form-wrap .form-table th,
-            .adanos-rsi-form-wrap .form-table td { margin: 0; padding: 0; width: auto; }
-            .adanos-rsi-form-wrap .form-table th { font-size: 13px; line-height: 1.5; }
-            .adanos-rsi-form-wrap .form-table td .description { margin-top: 6px; line-height: 1.45; }
-            .adanos-rsi-form-wrap .regular-text { width: min(100%, 320px); }
-            .adanos-rsi-form-wrap .small-text { width: 88px; }
-            .adanos-rsi-form-wrap .submit { margin: 0; padding: 2px 0 0; }
-            .adanos-rsi-cache-form { margin-top: 2px; }
-            .adanos-rsi-faq details { border-top: 1px solid #e5e7eb; padding: 12px 0; }
-            .adanos-rsi-faq details:first-child { padding-top: 0; border-top: 0; }
-            .adanos-rsi-faq summary { cursor: pointer; font-weight: 600; font-size: 15px; line-height: 1.45; }
-            .adanos-rsi-faq details p { margin: 8px 0 0; }
-            @media (max-width: 1200px) {
-                .adanos-rsi-layout { grid-template-columns: 1fr; }
-                .adanos-rsi-grid.cols-3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            }
-            @media (max-width: 782px) {
-                .adanos-rsi-admin { padding-right: 0; }
-                .adanos-rsi-hero { padding: 18px; }
-                .adanos-rsi-grid.cols-3 { grid-template-columns: 1fr; }
-                .adanos-rsi-form-wrap .form-table tr { grid-template-columns: 1fr; gap: 8px; }
-            }
-        </style>
         <div class="adanos-rsi-admin">
             <div class="adanos-rsi-hero">
-                <h1>
-                    <span><?php echo esc_html__('Market Sentiment', 'adanos-retail-sentiment-insights'); ?></span>
-                    <span class="adanos-rsi-hero-brand"><?php echo esc_html__('by Adanos', 'adanos-retail-sentiment-insights'); ?></span>
-                </h1>
-                <p><?php echo esc_html__('Turn market sentiment into publishable content in minutes. Add live stock widgets, inline buzz metrics, and ready-to-use summaries that make finance articles, watchlists, and newsletters more useful for readers.', 'adanos-retail-sentiment-insights'); ?></p>
+                <h1><?php echo esc_html__('Adanos Market Sentiment Widgets', 'adanos-market-sentiment-widgets'); ?></h1>
+                <p><?php echo esc_html__('Turn market sentiment into publishable content in minutes. Add live stock widgets, inline buzz metrics, and ready-to-use summaries that make finance articles, watchlists, and newsletters more useful for readers.', 'adanos-market-sentiment-widgets'); ?></p>
             </div>
 
             <div class="adanos-rsi-layout">
                 <div class="adanos-rsi-main">
                     <div class="adanos-rsi-card">
-                        <h2><?php echo esc_html__('Connect your API key', 'adanos-retail-sentiment-insights'); ?></h2>
+                        <h2><?php echo esc_html__('Connect your API key', 'adanos-market-sentiment-widgets'); ?></h2>
                         <div class="adanos-rsi-form-wrap">
                             <form method="post" action="options.php">
                                 <?php
@@ -217,99 +186,99 @@ function adanos_rsi_render_settings_page() {
                     </div>
 
                     <div class="adanos-rsi-card">
-                        <h2><?php echo esc_html__('Widget shortcodes', 'adanos-retail-sentiment-insights'); ?></h2>
+                        <h2><?php echo esc_html__('Widget shortcodes', 'adanos-market-sentiment-widgets'); ?></h2>
                         <div class="adanos-rsi-grid cols-3">
                             <div class="adanos-rsi-shortcode">
                                 <h3><code>[adanos]</code></h3>
-                                <p><?php echo esc_html__('Single-stock sentiment card with buzz, bullish percentage, trend, and source stats.', 'adanos-retail-sentiment-insights'); ?></p>
+                                <p><?php echo esc_html__('Single-stock sentiment card with buzz, bullish percentage, trend, and source stats.', 'adanos-market-sentiment-widgets'); ?></p>
                                 <code class="adanos-rsi-snippet">[adanos symbol="AAPL" source="reddit" width="100%"]</code>
                                 <ul>
-                                    <li><strong><?php echo esc_html__('Sources:', 'adanos-retail-sentiment-insights'); ?></strong> <code>reddit</code>, <code>x</code>, <code>news</code>, <code>polymarket</code></li>
-                                    <li><strong><?php echo esc_html__('Theme:', 'adanos-retail-sentiment-insights'); ?></strong> <code>light</code>, <code>dark</code></li>
-                                    <li><strong><?php echo esc_html__('Other options:', 'adanos-retail-sentiment-insights'); ?></strong> <code>show_explanation</code>, <code>days</code>, <code>width</code></li>
+                                    <li><strong><?php echo esc_html__('Sources:', 'adanos-market-sentiment-widgets'); ?></strong> <code>reddit</code>, <code>x</code>, <code>news</code>, <code>polymarket</code></li>
+                                    <li><strong><?php echo esc_html__('Theme:', 'adanos-market-sentiment-widgets'); ?></strong> <code>light</code>, <code>dark</code></li>
+                                    <li><strong><?php echo esc_html__('Other options:', 'adanos-market-sentiment-widgets'); ?></strong> <code>show_explanation</code>, <code>days</code>, <code>width</code></li>
                                 </ul>
                             </div>
                             <div class="adanos-rsi-shortcode">
                                 <h3><code>[adanos_ticker_tape]</code></h3>
-                                <p><?php echo esc_html__('Scrolling tape for currently trending stocks from one source.', 'adanos-retail-sentiment-insights'); ?></p>
+                                <p><?php echo esc_html__('Scrolling tape for currently trending stocks from one source.', 'adanos-market-sentiment-widgets'); ?></p>
                                 <code class="adanos-rsi-snippet">[adanos_ticker_tape source="x" limit="10" speed="normal" width="100%"]</code>
                                 <ul>
-                                    <li><strong><?php echo esc_html__('Sources:', 'adanos-retail-sentiment-insights'); ?></strong> <code>reddit</code>, <code>x</code>, <code>news</code>, <code>polymarket</code></li>
-                                    <li><strong><?php echo esc_html__('Speed:', 'adanos-retail-sentiment-insights'); ?></strong> <code>slow</code>, <code>normal</code>, <code>fast</code></li>
-                                    <li><strong><?php echo esc_html__('Limit:', 'adanos-retail-sentiment-insights'); ?></strong> <?php echo esc_html__('5 to 20 rows', 'adanos-retail-sentiment-insights'); ?></li>
+                                    <li><strong><?php echo esc_html__('Sources:', 'adanos-market-sentiment-widgets'); ?></strong> <code>reddit</code>, <code>x</code>, <code>news</code>, <code>polymarket</code></li>
+                                    <li><strong><?php echo esc_html__('Speed:', 'adanos-market-sentiment-widgets'); ?></strong> <code>slow</code>, <code>normal</code>, <code>fast</code></li>
+                                    <li><strong><?php echo esc_html__('Limit:', 'adanos-market-sentiment-widgets'); ?></strong> <?php echo esc_html__('5 to 20 rows', 'adanos-market-sentiment-widgets'); ?></li>
                                 </ul>
                             </div>
                             <div class="adanos-rsi-shortcode">
                                 <h3><code>[adanos_top_movers]</code></h3>
-                                <p><?php echo esc_html__('Table view for the strongest current movers within one source.', 'adanos-retail-sentiment-insights'); ?></p>
+                                <p><?php echo esc_html__('Table view for the strongest current movers within one source.', 'adanos-market-sentiment-widgets'); ?></p>
                                 <code class="adanos-rsi-snippet">[adanos_top_movers source="news" limit="8" period="7" width="100%"]</code>
                                 <ul>
-                                    <li><strong><?php echo esc_html__('Sources:', 'adanos-retail-sentiment-insights'); ?></strong> <code>reddit</code>, <code>x</code>, <code>news</code>, <code>polymarket</code></li>
-                                    <li><strong><?php echo esc_html__('Period:', 'adanos-retail-sentiment-insights'); ?></strong> <?php echo esc_html__('1 to 30 days', 'adanos-retail-sentiment-insights'); ?></li>
-                                    <li><strong><?php echo esc_html__('Other options:', 'adanos-retail-sentiment-insights'); ?></strong> <code>show_logos</code>, <code>theme</code>, <code>width</code></li>
+                                    <li><strong><?php echo esc_html__('Sources:', 'adanos-market-sentiment-widgets'); ?></strong> <code>reddit</code>, <code>x</code>, <code>news</code>, <code>polymarket</code></li>
+                                    <li><strong><?php echo esc_html__('Period:', 'adanos-market-sentiment-widgets'); ?></strong> <?php echo esc_html__('1 to 30 days', 'adanos-market-sentiment-widgets'); ?></li>
+                                    <li><strong><?php echo esc_html__('Other options:', 'adanos-market-sentiment-widgets'); ?></strong> <code>show_logos</code>, <code>theme</code>, <code>width</code></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
 
                     <div class="adanos-rsi-card">
-                        <h2><?php echo esc_html__('Text shortcodes', 'adanos-retail-sentiment-insights'); ?></h2>
+                        <h2><?php echo esc_html__('Text shortcodes', 'adanos-market-sentiment-widgets'); ?></h2>
                         <div class="adanos-rsi-grid cols-3">
                             <div class="adanos-rsi-shortcode">
                                 <h3><code>[adanos_value]</code></h3>
-                                <p><?php echo esc_html__('Drop one concrete value directly into a sentence or table cell.', 'adanos-retail-sentiment-insights'); ?></p>
+                                <p><?php echo esc_html__('Drop one concrete value directly into a sentence or table cell.', 'adanos-market-sentiment-widgets'); ?></p>
                                 <code class="adanos-rsi-snippet">Buzz: [adanos_value symbol="AAPL" source="news" field="buzz"]</code>
                                 <ul>
-                                    <li><strong><?php echo esc_html__('Fields:', 'adanos-retail-sentiment-insights'); ?></strong> <code>buzz</code>, <code>bullish</code>, <code>trend</code>, <code>mentions</code>, <code>trades</code>, <code>activity</code></li>
-                                    <li><strong><?php echo esc_html__('Extra fields:', 'adanos-retail-sentiment-insights'); ?></strong> <code>company</code>, <code>ticker</code>, <code>source_label</code>, <code>summary_value</code>, <code>summary_label</code>, <code>explanation</code></li>
-                                    <li><strong><?php echo esc_html__('Wrap text:', 'adanos-retail-sentiment-insights'); ?></strong> <code>prefix</code>, <code>suffix</code></li>
+                                    <li><strong><?php echo esc_html__('Fields:', 'adanos-market-sentiment-widgets'); ?></strong> <code>buzz</code>, <code>bullish</code>, <code>trend</code>, <code>mentions</code>, <code>trades</code>, <code>activity</code></li>
+                                    <li><strong><?php echo esc_html__('Extra fields:', 'adanos-market-sentiment-widgets'); ?></strong> <code>company</code>, <code>ticker</code>, <code>source_label</code>, <code>summary_value</code>, <code>summary_label</code>, <code>explanation</code></li>
+                                    <li><strong><?php echo esc_html__('Wrap text:', 'adanos-market-sentiment-widgets'); ?></strong> <code>prefix</code>, <code>suffix</code></li>
                                 </ul>
                             </div>
                             <div class="adanos-rsi-shortcode">
                                 <h3><code>[adanos_summary]</code></h3>
-                                <p><?php echo esc_html__('Inline one-sentence summary for a stock and source.', 'adanos-retail-sentiment-insights'); ?></p>
+                                <p><?php echo esc_html__('Inline one-sentence summary for a stock and source.', 'adanos-market-sentiment-widgets'); ?></p>
                                 <code class="adanos-rsi-snippet">[adanos_summary symbol="AAPL" source="x" format="sentence"]</code>
                                 <ul>
-                                    <li><strong><?php echo esc_html__('Formats:', 'adanos-retail-sentiment-insights'); ?></strong> <code>sentence</code>, <code>brief</code>, <code>explanation</code></li>
-                                    <li><strong><?php echo esc_html__('Sources:', 'adanos-retail-sentiment-insights'); ?></strong> <code>reddit</code>, <code>x</code>, <code>news</code>, <code>polymarket</code></li>
-                                    <li><strong><?php echo esc_html__('Best for:', 'adanos-retail-sentiment-insights'); ?></strong> <?php echo esc_html__('article intros, stock pages, and newsletter summaries', 'adanos-retail-sentiment-insights'); ?></li>
+                                    <li><strong><?php echo esc_html__('Formats:', 'adanos-market-sentiment-widgets'); ?></strong> <code>sentence</code>, <code>brief</code>, <code>explanation</code></li>
+                                    <li><strong><?php echo esc_html__('Sources:', 'adanos-market-sentiment-widgets'); ?></strong> <code>reddit</code>, <code>x</code>, <code>news</code>, <code>polymarket</code></li>
+                                    <li><strong><?php echo esc_html__('Best for:', 'adanos-market-sentiment-widgets'); ?></strong> <?php echo esc_html__('article intros, stock pages, and newsletter summaries', 'adanos-market-sentiment-widgets'); ?></li>
                                 </ul>
                             </div>
                             <div class="adanos-rsi-shortcode">
                                 <h3><code>[adanos_trending_text]</code></h3>
-                                <p><?php echo esc_html__('Plain-text list or sentence for currently trending stocks.', 'adanos-retail-sentiment-insights'); ?></p>
+                                <p><?php echo esc_html__('Plain-text list or sentence for currently trending stocks.', 'adanos-market-sentiment-widgets'); ?></p>
                                 <code class="adanos-rsi-snippet">[adanos_trending_text source="news" limit="3" format="sentence"]</code>
                                 <ul>
-                                    <li><strong><?php echo esc_html__('Formats:', 'adanos-retail-sentiment-insights'); ?></strong> <code>sentence</code>, <code>list</code>, <code>detailed</code></li>
-                                    <li><strong><?php echo esc_html__('Limit:', 'adanos-retail-sentiment-insights'); ?></strong> <?php echo esc_html__('1 to 10 tickers', 'adanos-retail-sentiment-insights'); ?></li>
-                                    <li><strong><?php echo esc_html__('Days:', 'adanos-retail-sentiment-insights'); ?></strong> <code>days</code> or <code>period</code>, <?php echo esc_html__('1 to 30', 'adanos-retail-sentiment-insights'); ?></li>
+                                    <li><strong><?php echo esc_html__('Formats:', 'adanos-market-sentiment-widgets'); ?></strong> <code>sentence</code>, <code>list</code>, <code>detailed</code></li>
+                                    <li><strong><?php echo esc_html__('Limit:', 'adanos-market-sentiment-widgets'); ?></strong> <?php echo esc_html__('1 to 10 tickers', 'adanos-market-sentiment-widgets'); ?></li>
+                                    <li><strong><?php echo esc_html__('Days:', 'adanos-market-sentiment-widgets'); ?></strong> <code>days</code> or <code>period</code>, <?php echo esc_html__('1 to 30', 'adanos-market-sentiment-widgets'); ?></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
 
                     <div class="adanos-rsi-card">
-                        <h2><?php echo esc_html__('FAQ', 'adanos-retail-sentiment-insights'); ?></h2>
+                        <h2><?php echo esc_html__('FAQ', 'adanos-market-sentiment-widgets'); ?></h2>
                         <div class="adanos-rsi-faq">
                             <details open>
-                                <summary><?php echo esc_html__('What can I actually publish with it?', 'adanos-retail-sentiment-insights'); ?></summary>
-                                <p><?php echo esc_html__('Single-stock sentiment cards, live trending strips, top movers tables, inline buzz values, bullish percentages, and sentence summaries that stay current without manual edits.', 'adanos-retail-sentiment-insights'); ?></p>
+                                <summary><?php echo esc_html__('What can I actually publish with it?', 'adanos-market-sentiment-widgets'); ?></summary>
+                                <p><?php echo esc_html__('Single-stock sentiment cards, live trending strips, top movers tables, inline buzz values, bullish percentages, and sentence summaries that stay current without manual edits.', 'adanos-market-sentiment-widgets'); ?></p>
                             </details>
                             <details>
-                                <summary><?php echo esc_html__('Which shortcode should I use inside articles?', 'adanos-retail-sentiment-insights'); ?></summary>
-                                <p><?php echo esc_html__('Use [adanos_value] for one metric, [adanos_summary] for a clean sentence, and [adanos_trending_text] when you want a text-only trending snippet in editorial copy.', 'adanos-retail-sentiment-insights'); ?></p>
+                                <summary><?php echo esc_html__('Which shortcode should I use inside articles?', 'adanos-market-sentiment-widgets'); ?></summary>
+                                <p><?php echo esc_html__('Use [adanos_value] for one metric, [adanos_summary] for a clean sentence, and [adanos_trending_text] when you want a text-only trending snippet in editorial copy.', 'adanos-market-sentiment-widgets'); ?></p>
                             </details>
                             <details>
-                                <summary><?php echo esc_html__('Which sources are supported?', 'adanos-retail-sentiment-insights'); ?></summary>
-                                <p><?php echo esc_html__('All shortcodes support Reddit, X.com, News, and Polymarket.', 'adanos-retail-sentiment-insights'); ?></p>
+                                <summary><?php echo esc_html__('Which sources are supported?', 'adanos-market-sentiment-widgets'); ?></summary>
+                                <p><?php echo esc_html__('All shortcodes support Reddit, X.com, News, and Polymarket.', 'adanos-market-sentiment-widgets'); ?></p>
                             </details>
                             <details>
-                                <summary><?php echo esc_html__('How does the caching work?', 'adanos-retail-sentiment-insights'); ?></summary>
-                                <p><?php echo esc_html__('Requests are fetched server-side through WordPress and stored in transients for the cache TTL you set above. On most standard WordPress installs, that means the cache lives in the database by default.', 'adanos-retail-sentiment-insights'); ?></p>
+                                <summary><?php echo esc_html__('How does the caching work?', 'adanos-market-sentiment-widgets'); ?></summary>
+                                <p><?php echo esc_html__('Requests are fetched server-side through WordPress and stored in transients for the cache TTL you set above. On most standard WordPress installs, that means the cache lives in the database by default.', 'adanos-market-sentiment-widgets'); ?></p>
                             </details>
                             <details>
-                                <summary><?php echo esc_html__('Do visitors see my API key?', 'adanos-retail-sentiment-insights'); ?></summary>
-                                <p><?php echo esc_html__('No. The API key stays server-side. Visitors only load local plugin assets and responses from your WordPress REST proxy.', 'adanos-retail-sentiment-insights'); ?></p>
+                                <summary><?php echo esc_html__('Do visitors see my API key?', 'adanos-market-sentiment-widgets'); ?></summary>
+                                <p><?php echo esc_html__('No. The API key stays server-side. Visitors only load local plugin assets and responses from your WordPress REST proxy.', 'adanos-market-sentiment-widgets'); ?></p>
                             </details>
                         </div>
                     </div>
@@ -317,50 +286,50 @@ function adanos_rsi_render_settings_page() {
 
                 <div class="adanos-rsi-sidebar">
                     <div class="adanos-rsi-card">
-                        <h2><?php echo esc_html__('Quick start', 'adanos-retail-sentiment-insights'); ?></h2>
+                        <h2><?php echo esc_html__('Quick start', 'adanos-market-sentiment-widgets'); ?></h2>
                         <ol class="adanos-rsi-steps">
-                            <li><span><?php echo esc_html__('Create an API key from the Adanos retail sentiment page.', 'adanos-retail-sentiment-insights'); ?> <a href="https://adanos.org/reddit-stock-sentiment#api-form" target="_blank" rel="noopener noreferrer"><?php echo esc_html__('Get an API key', 'adanos-retail-sentiment-insights'); ?></a></span></li>
-                            <li><span><?php echo esc_html__('Paste the key into the settings form and save changes.', 'adanos-retail-sentiment-insights'); ?></span></li>
-                            <li><span><?php echo esc_html__('Copy one shortcode into a post, page, or reusable block.', 'adanos-retail-sentiment-insights'); ?></span></li>
+                            <li><span><?php echo esc_html__('Create an API key from the Adanos retail sentiment page.', 'adanos-market-sentiment-widgets'); ?> <a href="https://adanos.org/reddit-stock-sentiment#api-form" target="_blank" rel="noopener noreferrer"><?php echo esc_html__('Get an API key', 'adanos-market-sentiment-widgets'); ?></a></span></li>
+                            <li><span><?php echo esc_html__('Paste the key into the settings form and save changes.', 'adanos-market-sentiment-widgets'); ?></span></li>
+                            <li><span><?php echo esc_html__('Copy one shortcode into a post, page, or reusable block.', 'adanos-market-sentiment-widgets'); ?></span></li>
                         </ol>
                     </div>
 
                     <div class="adanos-rsi-card">
-                        <h2><?php echo esc_html__('Supported sources', 'adanos-retail-sentiment-insights'); ?></h2>
+                        <h2><?php echo esc_html__('Supported sources', 'adanos-market-sentiment-widgets'); ?></h2>
                         <div class="adanos-rsi-chips">
-                            <span class="adanos-rsi-chip"><?php echo esc_html__('Reddit', 'adanos-retail-sentiment-insights'); ?></span>
-                            <span class="adanos-rsi-chip"><?php echo esc_html__('Finance News', 'adanos-retail-sentiment-insights'); ?></span>
-                            <span class="adanos-rsi-chip"><?php echo esc_html__('X.com', 'adanos-retail-sentiment-insights'); ?></span>
-                            <span class="adanos-rsi-chip"><?php echo esc_html__('Polymarket', 'adanos-retail-sentiment-insights'); ?></span>
+                            <span class="adanos-rsi-chip"><?php echo esc_html__('Reddit', 'adanos-market-sentiment-widgets'); ?></span>
+                            <span class="adanos-rsi-chip"><?php echo esc_html__('Finance News', 'adanos-market-sentiment-widgets'); ?></span>
+                            <span class="adanos-rsi-chip"><?php echo esc_html__('X.com', 'adanos-market-sentiment-widgets'); ?></span>
+                            <span class="adanos-rsi-chip"><?php echo esc_html__('Polymarket', 'adanos-market-sentiment-widgets'); ?></span>
                         </div>
                     </div>
 
                     <div class="adanos-rsi-card">
-                        <h2><?php echo esc_html__('Cache tools', 'adanos-retail-sentiment-insights'); ?></h2>
+                        <h2><?php echo esc_html__('Cache tools', 'adanos-market-sentiment-widgets'); ?></h2>
                         <div class="adanos-rsi-grid">
                             <div class="adanos-rsi-stat">
-                                <span class="adanos-rsi-stat-label"><?php echo esc_html__('Tracked cache entries', 'adanos-retail-sentiment-insights'); ?></span>
+                                <span class="adanos-rsi-stat-label"><?php echo esc_html__('Tracked cache entries', 'adanos-market-sentiment-widgets'); ?></span>
                                 <div class="adanos-rsi-stat-value"><?php echo esc_html(number_format_i18n(count($cache_keys))); ?></div>
                             </div>
                             <form class="adanos-rsi-cache-form" method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
                                 <input type="hidden" name="action" value="adanos_rsi_clear_cache" />
                                 <?php wp_nonce_field(ADANOS_RSI_CACHE_CLEAR_NONCE); ?>
-                                <?php submit_button(__('Clear cached API responses', 'adanos-retail-sentiment-insights'), 'secondary', 'submit', false); ?>
+                                <?php submit_button(__('Clear cached API responses', 'adanos-market-sentiment-widgets'), 'secondary', 'submit', false); ?>
                             </form>
-                            <p class="adanos-rsi-muted"><?php echo esc_html__('Use this after changing your API key, source mix, or when you want to force a fresh fetch.', 'adanos-retail-sentiment-insights'); ?></p>
+                            <p class="adanos-rsi-muted"><?php echo esc_html__('Use this after changing your API key, source mix, or when you want to force a fresh fetch.', 'adanos-market-sentiment-widgets'); ?></p>
                         </div>
                     </div>
 
                     <div class="adanos-rsi-card">
-                        <h2><?php echo esc_html__('Best use cases', 'adanos-retail-sentiment-insights'); ?></h2>
+                        <h2><?php echo esc_html__('Best use cases', 'adanos-market-sentiment-widgets'); ?></h2>
                         <ul class="adanos-rsi-bullet-list">
-                            <li><?php echo esc_html__('Stock profile pages with live sentiment context', 'adanos-retail-sentiment-insights'); ?></li>
-                            <li><?php echo esc_html__('Earnings preview posts and post-call recap articles', 'adanos-retail-sentiment-insights'); ?></li>
-                            <li><?php echo esc_html__('“Why this stock is trending” explainers', 'adanos-retail-sentiment-insights'); ?></li>
-                            <li><?php echo esc_html__('Market open / market close summary posts', 'adanos-retail-sentiment-insights'); ?></li>
-                            <li><?php echo esc_html__('Newsletter landing pages and daily market briefings', 'adanos-retail-sentiment-insights'); ?></li>
-                            <li><?php echo esc_html__('Comparison pieces like NVDA vs AMD or TSLA vs Rivian', 'adanos-retail-sentiment-insights'); ?></li>
-                            <li><?php echo esc_html__('Watchlist pages for growth, AI, EV, or meme-stock coverage', 'adanos-retail-sentiment-insights'); ?></li>
+                            <li><?php echo esc_html__('Stock profile pages with live sentiment context', 'adanos-market-sentiment-widgets'); ?></li>
+                            <li><?php echo esc_html__('Earnings preview posts and post-call recap articles', 'adanos-market-sentiment-widgets'); ?></li>
+                            <li><?php echo esc_html__('“Why this stock is trending” explainers', 'adanos-market-sentiment-widgets'); ?></li>
+                            <li><?php echo esc_html__('Market open / market close summary posts', 'adanos-market-sentiment-widgets'); ?></li>
+                            <li><?php echo esc_html__('Newsletter landing pages and daily market briefings', 'adanos-market-sentiment-widgets'); ?></li>
+                            <li><?php echo esc_html__('Comparison pieces like NVDA vs AMD or TSLA vs Rivian', 'adanos-market-sentiment-widgets'); ?></li>
+                            <li><?php echo esc_html__('Watchlist pages for growth, AI, EV, or meme-stock coverage', 'adanos-market-sentiment-widgets'); ?></li>
                         </ul>
                     </div>
                 </div>
@@ -386,7 +355,7 @@ function adanos_rsi_admin_notice_missing_key() {
     }
 
     echo '<div class="notice notice-warning"><p>' .
-        esc_html__('Market Sentiment needs an API key before the widgets can load live data.', 'adanos-retail-sentiment-insights') .
+        esc_html__('Adanos Market Sentiment Widgets needs an API key before the widgets can load live data.', 'adanos-market-sentiment-widgets') .
         '</p></div>';
 }
 
@@ -397,16 +366,18 @@ function adanos_rsi_admin_notice_cache_cleared() {
         return;
     }
 
-    if (empty($_GET['page']) || 'adanos-rsi' !== sanitize_key((string) $_GET['page'])) {
+    $page = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    if (empty($page) || 'adanos-rsi' !== sanitize_key((string) $page)) {
         return;
     }
 
-    if (empty($_GET['adanos_cache_cleared'])) {
+    $cache_cleared = filter_input(INPUT_GET, 'adanos_cache_cleared', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    if (empty($cache_cleared)) {
         return;
     }
 
     echo '<div class="notice notice-success is-dismissible"><p>' .
-        esc_html__('Adanos widget cache cleared successfully.', 'adanos-retail-sentiment-insights') .
+        esc_html__('Adanos widget cache cleared successfully.', 'adanos-market-sentiment-widgets') .
         '</p></div>';
 }
 
@@ -455,7 +426,7 @@ function adanos_rsi_clear_cache() {
 
 function adanos_rsi_handle_clear_cache() {
     if (!current_user_can('manage_options')) {
-        wp_die(esc_html__('You are not allowed to clear the Adanos cache.', 'adanos-retail-sentiment-insights'));
+        wp_die(esc_html__('You are not allowed to clear the Adanos cache.', 'adanos-market-sentiment-widgets'));
     }
 
     check_admin_referer(ADANOS_RSI_CACHE_CLEAR_NONCE);
@@ -485,7 +456,7 @@ function adanos_rsi_cached_get($namespace, $path, $query = array()) {
     }
 
     if (empty($options['api_key'])) {
-        return new WP_Error('adanos_missing_api_key', __('Adanos API key is not configured.', 'adanos-retail-sentiment-insights'));
+        return new WP_Error('adanos_missing_api_key', __('Adanos API key is not configured.', 'adanos-market-sentiment-widgets'));
     }
 
     $url = add_query_arg($query, adanos_rsi_api_base_url() . $path);
@@ -510,7 +481,7 @@ function adanos_rsi_cached_get($namespace, $path, $query = array()) {
             'adanos_http_error',
             sprintf(
                 /* translators: %d is the HTTP status code. */
-                __('Adanos API request failed with status %d.', 'adanos-retail-sentiment-insights'),
+                __('Adanos API request failed with status %d.', 'adanos-market-sentiment-widgets'),
                 absint($status_code)
             )
         );
@@ -518,7 +489,7 @@ function adanos_rsi_cached_get($namespace, $path, $query = array()) {
 
     $body = json_decode(wp_remote_retrieve_body($response), true);
     if (!is_array($body)) {
-        return new WP_Error('adanos_invalid_json', __('Adanos API returned an invalid JSON payload.', 'adanos-retail-sentiment-insights'));
+        return new WP_Error('adanos_invalid_json', __('Adanos API returned an invalid JSON payload.', 'adanos-market-sentiment-widgets'));
     }
 
     set_transient($cache_key, $body, absint($options['cache_ttl']));
@@ -535,18 +506,18 @@ function adanos_rsi_source_specs() {
             'explain_path' => '/reddit/stocks/v1/stock/%s/explain',
             'trending_path' => '/reddit/stocks/v1/trending',
             'activity_field' => 'mentions',
-            'activity_label' => __('Mentions', 'adanos-retail-sentiment-insights'),
+            'activity_label' => __('Mentions', 'adanos-market-sentiment-widgets'),
             'summary_field' => 'subreddit_count',
-            'summary_label' => __('Subreddits', 'adanos-retail-sentiment-insights'),
+            'summary_label' => __('Subreddits', 'adanos-market-sentiment-widgets'),
         ),
         'x' => array(
             'label' => 'X.com',
             'stock_path' => '/x/stocks/v1/stock/%s',
             'trending_path' => '/x/stocks/v1/trending',
             'activity_field' => 'mentions',
-            'activity_label' => __('Mentions', 'adanos-retail-sentiment-insights'),
+            'activity_label' => __('Mentions', 'adanos-market-sentiment-widgets'),
             'summary_field' => 'total_upvotes',
-            'summary_label' => __('Likes', 'adanos-retail-sentiment-insights'),
+            'summary_label' => __('Likes', 'adanos-market-sentiment-widgets'),
         ),
         'news' => array(
             'label' => 'News',
@@ -554,18 +525,18 @@ function adanos_rsi_source_specs() {
             'explain_path' => '/news/stocks/v1/stock/%s/explain',
             'trending_path' => '/news/stocks/v1/trending',
             'activity_field' => 'mentions',
-            'activity_label' => __('Mentions', 'adanos-retail-sentiment-insights'),
+            'activity_label' => __('Mentions', 'adanos-market-sentiment-widgets'),
             'summary_field' => 'source_count',
-            'summary_label' => __('Publishers', 'adanos-retail-sentiment-insights'),
+            'summary_label' => __('Publishers', 'adanos-market-sentiment-widgets'),
         ),
         'polymarket' => array(
             'label' => 'Polymarket',
             'stock_path' => '/polymarket/stocks/v1/stock/%s',
             'trending_path' => '/polymarket/stocks/v1/trending',
             'activity_field' => 'trade_count',
-            'activity_label' => __('Trades', 'adanos-retail-sentiment-insights'),
+            'activity_label' => __('Trades', 'adanos-market-sentiment-widgets'),
             'summary_field' => 'total_liquidity',
-            'summary_label' => __('Liquidity', 'adanos-retail-sentiment-insights'),
+            'summary_label' => __('Liquidity', 'adanos-market-sentiment-widgets'),
         ),
     );
 }
@@ -694,24 +665,24 @@ function adanos_rsi_build_explanation($source, $ticker, $detail, $spec) {
         }
     }
 
-    $trend = !empty($detail['trend']) ? sanitize_text_field($detail['trend']) : __('stable', 'adanos-retail-sentiment-insights');
+    $trend = !empty($detail['trend']) ? sanitize_text_field($detail['trend']) : __('stable', 'adanos-market-sentiment-widgets');
     $activity = adanos_rsi_extract_activity_value($detail, $spec);
     $bullish_pct = isset($detail['bullish_pct']) ? (float) $detail['bullish_pct'] : null;
-    $tone = __('mixed', 'adanos-retail-sentiment-insights');
+    $tone = __('mixed', 'adanos-market-sentiment-widgets');
 
     if (null !== $bullish_pct) {
         if ($bullish_pct >= 55) {
-            $tone = __('bullish', 'adanos-retail-sentiment-insights');
+            $tone = __('bullish', 'adanos-market-sentiment-widgets');
         } elseif ($bullish_pct <= 45) {
-            $tone = __('bearish', 'adanos-retail-sentiment-insights');
+            $tone = __('bearish', 'adanos-market-sentiment-widgets');
         } else {
-            $tone = __('neutral', 'adanos-retail-sentiment-insights');
+            $tone = __('neutral', 'adanos-market-sentiment-widgets');
         }
     }
 
     return sprintf(
         /* translators: 1: source label, 2: ticker, 3: tone, 4: activity count, 5: activity label, 6: trend */
-        __('%1$s sentiment for %2$s is currently %3$s with %4$s %5$s. Momentum is %6$s in the latest tracking window.', 'adanos-retail-sentiment-insights'),
+        __('%1$s sentiment for %2$s is currently %3$s with %4$s %5$s. Momentum is %6$s in the latest tracking window.', 'adanos-market-sentiment-widgets'),
         $spec['label'],
         $ticker,
         $tone,
@@ -724,7 +695,7 @@ function adanos_rsi_build_explanation($source, $ticker, $detail, $spec) {
 function adanos_rsi_get_stock_widget_payload($source, $ticker, $days, $show_explanation) {
     $specs = adanos_rsi_source_specs();
     if (!isset($specs[$source])) {
-        return new WP_Error('adanos_invalid_source', __('Invalid retail sentiment source.', 'adanos-retail-sentiment-insights'));
+        return new WP_Error('adanos_invalid_source', __('Invalid retail sentiment source.', 'adanos-market-sentiment-widgets'));
     }
 
     $spec = $specs[$source];
@@ -761,7 +732,7 @@ function adanos_rsi_get_stock_widget_payload($source, $ticker, $days, $show_expl
 function adanos_rsi_get_trending_widget_payload($source, $days, $limit) {
     $specs = adanos_rsi_source_specs();
     if (!isset($specs[$source])) {
-        return new WP_Error('adanos_invalid_source', __('Invalid retail sentiment source.', 'adanos-retail-sentiment-insights'));
+        return new WP_Error('adanos_invalid_source', __('Invalid retail sentiment source.', 'adanos-market-sentiment-widgets'));
     }
 
     $spec = $specs[$source];
@@ -931,7 +902,7 @@ function adanos_rsi_build_stock_summary($payload, $format) {
     if ('brief' === $format) {
         return sprintf(
             /* translators: 1: buzz, 2: bullish percentage, 3: activity count, 4: activity label, 5: trend */
-            __('%1$s buzz, %2$s bullish, %3$s %4$s, %5$s trend.', 'adanos-retail-sentiment-insights'),
+            __('%1$s buzz, %2$s bullish, %3$s %4$s, %5$s trend.', 'adanos-market-sentiment-widgets'),
             $buzz,
             $bullish,
             $activity,
@@ -942,7 +913,7 @@ function adanos_rsi_build_stock_summary($payload, $format) {
 
     return sprintf(
         /* translators: 1: ticker, 2: source label, 3: buzz, 4: bullish percentage, 5: activity count, 6: activity label, 7: trend */
-        __('%1$s has a %3$s %2$s buzz score, %4$s bullish sentiment, %5$s %6$s, and a %7$s trend.', 'adanos-retail-sentiment-insights'),
+        __('%1$s has a %3$s %2$s buzz score, %4$s bullish sentiment, %5$s %6$s, and a %7$s trend.', 'adanos-market-sentiment-widgets'),
         $ticker,
         $source_label,
         $buzz,
@@ -959,7 +930,7 @@ function adanos_rsi_build_trending_text($payload, $format) {
         return '';
     }
 
-    $source_label = isset($payload['source_label']) ? (string) $payload['source_label'] : __('This source', 'adanos-retail-sentiment-insights');
+    $source_label = isset($payload['source_label']) ? (string) $payload['source_label'] : __('This source', 'adanos-market-sentiment-widgets');
     $tickers = array();
     $detailed = array();
 
@@ -971,7 +942,7 @@ function adanos_rsi_build_trending_text($payload, $format) {
         $tickers[] = (string) $row['ticker'];
         $detailed[] = sprintf(
             /* translators: 1: ticker, 2: buzz */
-            __('%1$s (%2$s buzz)', 'adanos-retail-sentiment-insights'),
+            __('%1$s (%2$s buzz)', 'adanos-market-sentiment-widgets'),
             $row['ticker'],
             adanos_rsi_format_numeric_value(isset($row['buzz_score']) ? $row['buzz_score'] : 0, 1)
         );
@@ -991,7 +962,7 @@ function adanos_rsi_build_trending_text($payload, $format) {
 
     return sprintf(
         /* translators: 1: source label, 2: ticker list */
-        __('%1$s is currently led by %2$s.', 'adanos-retail-sentiment-insights'),
+        __('%1$s is currently led by %2$s.', 'adanos-market-sentiment-widgets'),
         $source_label,
         adanos_rsi_join_text_list($tickers)
     );
@@ -1013,7 +984,7 @@ function adanos_rsi_rest_stock_sentiment(WP_REST_Request $request) {
     $show_explanation = adanos_rsi_sanitize_bool($request->get_param('show_explanation'), true);
 
     if ('' === $ticker) {
-        return new WP_REST_Response(array('message' => __('Missing ticker parameter.', 'adanos-retail-sentiment-insights')), 400);
+        return new WP_REST_Response(array('message' => __('Missing ticker parameter.', 'adanos-market-sentiment-widgets')), 400);
     }
 
     $payload = adanos_rsi_get_stock_widget_payload($source, $ticker, $days, $show_explanation);
@@ -1138,7 +1109,7 @@ function adanos_rsi_shortcode_stock_sentiment($atts) {
     $symbol = strtoupper(sanitize_text_field($symbol));
 
     if ('' === $symbol) {
-        return adanos_rsi_render_error(__('Please provide a stock symbol via symbol="AAPL".', 'adanos-retail-sentiment-insights'));
+        return adanos_rsi_render_error(__('Please provide a stock symbol via symbol="AAPL".', 'adanos-market-sentiment-widgets'));
     }
 
     return adanos_rsi_render_widget(
@@ -1226,7 +1197,7 @@ function adanos_rsi_shortcode_value($atts) {
     $symbol = strtoupper(sanitize_text_field($symbol));
 
     if ('' === $symbol) {
-        return esc_html__('Please provide a stock symbol.', 'adanos-retail-sentiment-insights');
+        return esc_html__('Please provide a stock symbol.', 'adanos-market-sentiment-widgets');
     }
 
     $payload = adanos_rsi_get_stock_widget_payload(
@@ -1266,7 +1237,7 @@ function adanos_rsi_shortcode_summary($atts) {
     $symbol = strtoupper(sanitize_text_field($symbol));
 
     if ('' === $symbol) {
-        return esc_html__('Please provide a stock symbol.', 'adanos-retail-sentiment-insights');
+        return esc_html__('Please provide a stock symbol.', 'adanos-market-sentiment-widgets');
     }
 
     $format = sanitize_key($atts['format']);
