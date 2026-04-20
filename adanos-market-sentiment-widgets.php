@@ -3,7 +3,7 @@
  * Plugin Name: Adanos Market Sentiment Widgets
  * Plugin URI: https://github.com/adanos-software/market-sentiment-wordpress
  * Description: Embed self-hosted stock sentiment widgets and shortcodes for WordPress, powered by Adanos market data.
- * Version: 0.6.2
+ * Version: 0.6.3
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author: Adanos Software
@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('ADANOS_RSI_VERSION', '0.6.2');
+define('ADANOS_RSI_VERSION', '0.6.3');
 define('ADANOS_RSI_OPTION', 'adanos_rsi_options');
 define('ADANOS_RSI_CACHE_INDEX_OPTION', 'adanos_rsi_cache_keys');
 define('ADANOS_RSI_TRANSIENT_PREFIX', 'adanos_rsi_');
@@ -505,8 +505,7 @@ function adanos_rsi_source_specs() {
             'stock_path' => '/reddit/stocks/v1/stock/%s',
             'explain_path' => '/reddit/stocks/v1/stock/%s/explain',
             'trending_path' => '/reddit/stocks/v1/trending',
-            'activity_field' => 'total_mentions',
-            'activity_fallback' => 'mentions',
+            'activity_field' => 'mentions',
             'activity_label' => __('Mentions', 'adanos-market-sentiment-widgets'),
             'summary_field' => 'subreddit_count',
             'summary_label' => __('Subreddits', 'adanos-market-sentiment-widgets'),
@@ -516,7 +515,6 @@ function adanos_rsi_source_specs() {
             'stock_path' => '/x/stocks/v1/stock/%s',
             'trending_path' => '/x/stocks/v1/trending',
             'activity_field' => 'mentions',
-            'activity_fallback' => 'total_mentions',
             'activity_label' => __('Mentions', 'adanos-market-sentiment-widgets'),
             'summary_field' => 'total_upvotes',
             'summary_label' => __('Likes', 'adanos-market-sentiment-widgets'),
