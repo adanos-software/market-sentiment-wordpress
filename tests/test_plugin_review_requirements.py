@@ -39,6 +39,7 @@ def test_readme_matches_new_brand_and_contributor():
 
     assert readme.startswith("=== Adanos Market Sentiment Widgets ===")
     assert "Contributors: adanosorg" in readme
+    assert "Tested up to: 7.0" in readme
     assert "Stable tag: 0.6.3" in readme
     assert '<a href="https://adanos.org/reddit-stock-sentiment#api-form">' in readme
     assert '<a href="https://api.adanos.org/docs">' in readme
