@@ -1,8 +1,8 @@
 # Adanos Market Sentiment Widgets for WordPress
 
-`Adanos Market Sentiment Widgets` is a WordPress plugin by [Adanos](https://adanos.org/) for finance publishers, investor blogs, and stock-focused communities.
+`Adanos Market Sentiment Widgets` is a WordPress plugin by [Adanos](https://adanos.org/) for finance publishers, investor blogs, and market-focused communities.
 
-It lets you embed live stock sentiment cards, ticker tapes, top movers tables, and inline text snippets directly inside WordPress posts and pages.
+It lets you embed live stock and crypto sentiment cards, ticker tapes, top movers tables, and inline text snippets directly inside WordPress posts and pages.
 
 The plugin keeps the frontend widget code self-hosted inside WordPress, sends requests server-side, and caches API responses in WordPress transients so normal sites can stay within modest API limits.
 
@@ -10,17 +10,18 @@ It also registers suggested privacy-policy text in WordPress so site owners can 
 
 ## What it adds
 
-- Single-stock sentiment widgets with buzz, bullish percentage, trend, and activity
-- Trending ticker tape widgets for Reddit, Finance News, X.com, and Polymarket
-- Top movers tables for current sentiment leaders
+- Single-asset sentiment widgets with buzz, bullish percentage, trend, and activity
+- Trending ticker tape widgets for Reddit, Reddit Crypto, Finance News, X.com, and Polymarket
+- Top movers tables for current stock and crypto sentiment leaders
 - Text shortcodes for inline buzz values, bullish percentages, and publish-ready summaries
 - Cached responses with a one-click cache clear tool in the WordPress admin
 
 ## Good fits
 
-- Stock profile pages
+- Stock and crypto profile pages
 - Earnings preview and recap posts
 - "Why this stock is trending" explainers
+- "Why this token is trending" explainers
 - Market open / market close summaries
 - Newsletter landing pages
 - Comparison pieces such as `NVDA vs AMD` or `TSLA vs Rivian`
@@ -41,6 +42,7 @@ It also registers suggested privacy-policy text in WordPress so site owners can 
 
 ```text
 [adanos symbol="AAPL" source="reddit" width="100%"]
+[adanos symbol="BTC" source="crypto" width="100%"]
 [adanos_ticker_tape source="x" limit="10" speed="normal" width="100%"]
 [adanos_top_movers source="news" limit="8" period="7" width="100%"]
 ```
@@ -59,6 +61,7 @@ It also registers suggested privacy-policy text in WordPress so site owners can 
 - `x`
 - `news`
 - `polymarket`
+- `crypto`
 
 ## Security and privacy
 
@@ -72,7 +75,7 @@ For full WordPress.org-style disclosure, see [readme.txt](./readme.txt).
 
 ## External service
 
-This plugin uses the Adanos Finance API:
+This plugin uses the Adanos Market Sentiment API:
 
 - API docs: [api.adanos.org/docs](https://api.adanos.org/docs)
 - Key signup: [adanos.org/reddit-stock-sentiment#api-form](https://adanos.org/reddit-stock-sentiment#api-form)

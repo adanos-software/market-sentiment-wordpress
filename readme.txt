@@ -1,29 +1,29 @@
 === Adanos Market Sentiment Widgets ===
 Contributors: adanosorg
-Tags: stocks, finance, sentiment, shortcode, widget
+Tags: stocks, crypto, finance, sentiment, shortcode
 Requires at least: 6.0
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.6.3
+Stable tag: 0.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Embed self-hosted stock sentiment widgets and shortcodes for WordPress, powered by Adanos.
+Embed self-hosted stock and crypto sentiment widgets and shortcodes for WordPress, powered by Adanos.
 
 == Description ==
 
-Adanos Market Sentiment Widgets helps finance publishers, bloggers, and investor communities embed self-hosted stock sentiment widgets directly into WordPress content.
+Adanos Market Sentiment Widgets helps finance publishers, bloggers, and investor communities embed self-hosted stock and crypto sentiment widgets directly into WordPress content.
 
 The plugin ships the widget code locally inside WordPress and proxies Adanos API requests through WordPress REST endpoints. Responses are cached with WordPress transients, which means the cache lives in the database by default when no external object cache is active. The default cache TTL is 24 hours so the free 250 requests/month API plan can support daily refreshes without constant re-fetching.
 
 The plugin adds widget and text shortcodes:
 
-* `[adanos]` for the stock sentiment card widget
+* `[adanos]` for the stock or crypto sentiment card widget
 * `[adanos_ticker_tape]` for the live ticker tape widget
 * `[adanos_top_movers]` for the top movers widget
 * `[adanos_value]` for inline data points like buzz, bullish percentage, mentions, or trend
-* `[adanos_summary]` for one-line stock sentiment summaries
-* `[adanos_trending_text]` for plain-text trending stock lists and sentences
+* `[adanos_summary]` for one-line stock or crypto sentiment summaries
+* `[adanos_trending_text]` for plain-text trending stock or crypto lists and sentences
 
 Supported sources:
 
@@ -31,28 +31,29 @@ Supported sources:
 * `x`
 * `news`
 * `polymarket`
+* `crypto`
 
 == Installation ==
 
 1. Upload the plugin folder to `/wp-content/plugins/`.
 2. Activate **Adanos Market Sentiment Widgets** in the WordPress admin.
-3. Open **Settings > Adanos Market Sentiment Widgets** and add your Adanos Finance API key.
+3. Open **Settings > Adanos Market Sentiment Widgets** and add your Adanos Market Sentiment API key.
 4. If you do not have a key yet, get one at <a href="https://adanos.org/reddit-stock-sentiment#api-form">adanos.org/reddit-stock-sentiment#api-form</a>
 5. Use the shortcodes in posts, pages, or widget areas.
 
 == Screenshots ==
 
-1. Widget and text shortcodes inside a stock-focused WordPress article.
+1. Widget and text shortcodes inside a finance-focused WordPress article.
 2. Admin settings page with API key, cache tools, and shortcode guidance.
 
 == External services ==
 
-This plugin connects to the Adanos Finance API to fetch retail sentiment data for stocks.
+This plugin connects to the Adanos Market Sentiment API to fetch sentiment data for stocks and crypto assets.
 
 It sends:
 
-* the stock ticker or tickers requested by your shortcode
-* the source you selected (`reddit`, `x`, `news`, or `polymarket`)
+* the stock ticker or crypto symbol requested by your shortcode
+* the source you selected (`reddit`, `x`, `news`, `polymarket`, or `crypto`)
 * the requested lookback window and limit values
 * your server IP address as part of the normal HTTPS request
 * your Adanos API key in the request header
@@ -71,7 +72,7 @@ Service provider:
 
 = Do I need an API key? =
 
-Yes. The plugin fetches live sentiment data from the Adanos Finance API through a local WordPress proxy. You can get an API key at <a href="https://adanos.org/reddit-stock-sentiment#api-form">adanos.org/reddit-stock-sentiment#api-form</a>
+Yes. The plugin fetches live sentiment data from the Adanos Market Sentiment API through a local WordPress proxy. You can get an API key at <a href="https://adanos.org/reddit-stock-sentiment#api-form">adanos.org/reddit-stock-sentiment#api-form</a>
 
 = What cache setting should I use on a free API key? =
 
@@ -83,9 +84,11 @@ Yes. The widget code is bundled inside the plugin and loaded from your WordPress
 
 = What shortcodes are available? =
 
-Single stock card:
+Single stock or crypto card:
 
 `[adanos symbol="AAPL" source="reddit" width="100%"]`
+
+`[adanos symbol="BTC" source="crypto" width="100%"]`
 
 Ticker tape:
 
@@ -124,6 +127,7 @@ All shortcodes support these sources:
 * `x`
 * `news`
 * `polymarket`
+* `crypto`
 
 = What values can I use with [adanos_value]? =
 
@@ -185,6 +189,10 @@ Inline sentence summary:
 
 `[adanos_summary symbol="TSLA" source="x" format="sentence"]`
 
+Crypto sentiment card:
+
+`[adanos symbol="BTC" source="crypto" width="100%"]`
+
 Trending ticker list:
 
 `Currently trending: [adanos_trending_text source="news" limit="5" format="list"]`
@@ -204,6 +212,12 @@ The plugin does not track visitors, set its own analytics cookies, or send visit
 The plugin also adds suggested privacy-policy text in WordPress so site owners can include the external-service disclosure in their privacy policy page.
 
 == Changelog ==
+
+= 0.7.0 =
+
+* Added Reddit Crypto support with `source="crypto"` for cards, ticker tapes, top movers, and text shortcodes
+* Updated proxy requests for the current Adanos Market Sentiment API source matrix
+* Refreshed plugin copy and documentation for stock and crypto assets
 
 = 0.6.2 =
 

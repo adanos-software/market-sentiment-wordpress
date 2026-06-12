@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 
@@ -13,7 +14,7 @@ def test_plugin_uses_distinctive_name_and_text_domain():
 
     assert "Plugin Name: Adanos Market Sentiment Widgets" in plugin
     assert "Text Domain: adanos-market-sentiment-widgets" in plugin
-    assert "Version: 0.6.3" in plugin
+    assert "Version: 0.7.0" in plugin
     assert PLUGIN_FILE.name == "adanos-market-sentiment-widgets.php"
 
 
@@ -40,8 +41,25 @@ def test_readme_matches_new_brand_and_contributor():
     assert readme.startswith("=== Adanos Market Sentiment Widgets ===")
     assert "Contributors: adanosorg" in readme
     assert "Tested up to: 7.0" in readme
-    assert "Stable tag: 0.6.3" in readme
+    assert "Stable tag: 0.7.0" in readme
     assert '<a href="https://adanos.org/reddit-stock-sentiment#api-form">' in readme
     assert '<a href="https://api.adanos.org/docs">' in readme
     assert '<a href="https://adanos.org/privacy-policy">' in readme
     assert '<a href="https://adanos.org/terms">' in readme
+
+
+def test_plugin_supports_reddit_crypto_source():
+    plugin = PLUGIN_FILE.read_text()
+    readme = README_FILE.read_text()
+
+    assert "'crypto' => array(" in plugin
+    assert "'stock_path' => '/reddit/crypto/v1/token/%s'" in plugin
+    assert "'trending_path' => '/reddit/crypto/v1/trending'" in plugin
+    assert "'trending_type' => 'stock'" in plugin
+    assert "if (!empty($spec['trending_type']))" in plugin
+    assert "'path' => $path" in plugin
+    crypto_source = re.search(r"'crypto' => array\((.*?)\n        \),", plugin, re.S)
+    assert crypto_source is not None
+    assert "'trending_type'" not in crypto_source.group(1)
+    assert "* `crypto`" in readme
+    assert '[adanos symbol="BTC" source="crypto" width="100%"]' in readme

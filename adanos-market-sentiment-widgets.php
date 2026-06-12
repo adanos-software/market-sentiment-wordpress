@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Adanos Market Sentiment Widgets
  * Plugin URI: https://github.com/adanos-software/market-sentiment-wordpress
- * Description: Embed self-hosted stock sentiment widgets and shortcodes for WordPress, powered by Adanos market data.
- * Version: 0.6.3
+ * Description: Embed self-hosted stock and crypto sentiment widgets and shortcodes for WordPress, powered by Adanos market data.
+ * Version: 0.7.0
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author: Adanos Software
@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('ADANOS_RSI_VERSION', '0.6.3');
+define('ADANOS_RSI_VERSION', '0.7.0');
 define('ADANOS_RSI_OPTION', 'adanos_rsi_options');
 define('ADANOS_RSI_CACHE_INDEX_OPTION', 'adanos_rsi_cache_keys');
 define('ADANOS_RSI_TRANSIENT_PREFIX', 'adanos_rsi_');
@@ -102,8 +102,8 @@ function adanos_rsi_register_privacy_policy_content() {
     }
 
     $content =
-        '<p>' . esc_html__('Adanos Market Sentiment Widgets fetches stock sentiment data from the Adanos Finance API when site owners use the plugin shortcodes or widgets.', 'adanos-market-sentiment-widgets') . '</p>' .
-        '<p>' . esc_html__('To provide this functionality, the plugin sends the requested stock ticker, source selection, lookback window, your site server IP address, and the configured Adanos API key to the Adanos Finance API. No visitor-entered form data is sent directly to Adanos.', 'adanos-market-sentiment-widgets') . '</p>' .
+        '<p>' . esc_html__('Adanos Market Sentiment Widgets fetches stock and crypto sentiment data from the Adanos Market Sentiment API when site owners use the plugin shortcodes or widgets.', 'adanos-market-sentiment-widgets') . '</p>' .
+        '<p>' . esc_html__('To provide this functionality, the plugin sends the requested ticker or token symbol, source selection, lookback window, your site server IP address, and the configured Adanos API key to the Adanos Market Sentiment API. No visitor-entered form data is sent directly to Adanos.', 'adanos-market-sentiment-widgets') . '</p>' .
         '<p>' . esc_html__('The plugin stores the Adanos API key in the WordPress options table and stores cached API responses in WordPress transients to reduce repeated requests.', 'adanos-market-sentiment-widgets') . '</p>';
 
     wp_add_privacy_policy_content(
@@ -119,7 +119,7 @@ function adanos_rsi_render_api_key_field() {
     ?>
     <input type="password" class="regular-text" name="<?php echo esc_attr(ADANOS_RSI_OPTION); ?>[api_key]" value="<?php echo esc_attr($options['api_key']); ?>" autocomplete="off" />
     <p class="description">
-        <?php echo esc_html__('Used by the local WordPress proxy for cached requests to the Adanos Finance API.', 'adanos-market-sentiment-widgets'); ?>
+        <?php echo esc_html__('Used by the local WordPress proxy for cached requests to the Adanos Market Sentiment API.', 'adanos-market-sentiment-widgets'); ?>
         <a href="https://adanos.org/reddit-stock-sentiment#api-form" target="_blank" rel="noopener noreferrer"><?php echo esc_html__('Get an API key', 'adanos-market-sentiment-widgets'); ?></a>
     </p>
     <?php
@@ -167,7 +167,7 @@ function adanos_rsi_render_settings_page() {
         <div class="adanos-rsi-admin">
             <div class="adanos-rsi-hero">
                 <h1><?php echo esc_html__('Adanos Market Sentiment Widgets', 'adanos-market-sentiment-widgets'); ?></h1>
-                <p><?php echo esc_html__('Turn market sentiment into publishable content in minutes. Add live stock widgets, inline buzz metrics, and ready-to-use summaries that make finance articles, watchlists, and newsletters more useful for readers.', 'adanos-market-sentiment-widgets'); ?></p>
+                <p><?php echo esc_html__('Turn market sentiment into publishable content in minutes. Add live stock and crypto widgets, inline buzz metrics, and ready-to-use summaries that make finance articles, watchlists, and newsletters more useful for readers.', 'adanos-market-sentiment-widgets'); ?></p>
             </div>
 
             <div class="adanos-rsi-layout">
@@ -190,30 +190,30 @@ function adanos_rsi_render_settings_page() {
                         <div class="adanos-rsi-grid cols-3">
                             <div class="adanos-rsi-shortcode">
                                 <h3><code>[adanos]</code></h3>
-                                <p><?php echo esc_html__('Single-stock sentiment card with buzz, bullish percentage, trend, and source stats.', 'adanos-market-sentiment-widgets'); ?></p>
+                                <p><?php echo esc_html__('Single stock or crypto sentiment card with buzz, bullish percentage, trend, and source stats.', 'adanos-market-sentiment-widgets'); ?></p>
                                 <code class="adanos-rsi-snippet">[adanos symbol="AAPL" source="reddit" width="100%"]</code>
                                 <ul>
-                                    <li><strong><?php echo esc_html__('Sources:', 'adanos-market-sentiment-widgets'); ?></strong> <code>reddit</code>, <code>x</code>, <code>news</code>, <code>polymarket</code></li>
+                                    <li><strong><?php echo esc_html__('Sources:', 'adanos-market-sentiment-widgets'); ?></strong> <code>reddit</code>, <code>x</code>, <code>news</code>, <code>polymarket</code>, <code>crypto</code></li>
                                     <li><strong><?php echo esc_html__('Theme:', 'adanos-market-sentiment-widgets'); ?></strong> <code>light</code>, <code>dark</code></li>
                                     <li><strong><?php echo esc_html__('Other options:', 'adanos-market-sentiment-widgets'); ?></strong> <code>show_explanation</code>, <code>days</code>, <code>width</code></li>
                                 </ul>
                             </div>
                             <div class="adanos-rsi-shortcode">
                                 <h3><code>[adanos_ticker_tape]</code></h3>
-                                <p><?php echo esc_html__('Scrolling tape for currently trending stocks from one source.', 'adanos-market-sentiment-widgets'); ?></p>
+                                <p><?php echo esc_html__('Scrolling tape for currently trending stocks or crypto tokens from one source.', 'adanos-market-sentiment-widgets'); ?></p>
                                 <code class="adanos-rsi-snippet">[adanos_ticker_tape source="x" limit="10" speed="normal" width="100%"]</code>
                                 <ul>
-                                    <li><strong><?php echo esc_html__('Sources:', 'adanos-market-sentiment-widgets'); ?></strong> <code>reddit</code>, <code>x</code>, <code>news</code>, <code>polymarket</code></li>
+                                    <li><strong><?php echo esc_html__('Sources:', 'adanos-market-sentiment-widgets'); ?></strong> <code>reddit</code>, <code>x</code>, <code>news</code>, <code>polymarket</code>, <code>crypto</code></li>
                                     <li><strong><?php echo esc_html__('Speed:', 'adanos-market-sentiment-widgets'); ?></strong> <code>slow</code>, <code>normal</code>, <code>fast</code></li>
                                     <li><strong><?php echo esc_html__('Limit:', 'adanos-market-sentiment-widgets'); ?></strong> <?php echo esc_html__('5 to 20 rows', 'adanos-market-sentiment-widgets'); ?></li>
                                 </ul>
                             </div>
                             <div class="adanos-rsi-shortcode">
                                 <h3><code>[adanos_top_movers]</code></h3>
-                                <p><?php echo esc_html__('Table view for the strongest current movers within one source.', 'adanos-market-sentiment-widgets'); ?></p>
+                                <p><?php echo esc_html__('Table view for the strongest current stock or crypto movers within one source.', 'adanos-market-sentiment-widgets'); ?></p>
                                 <code class="adanos-rsi-snippet">[adanos_top_movers source="news" limit="8" period="7" width="100%"]</code>
                                 <ul>
-                                    <li><strong><?php echo esc_html__('Sources:', 'adanos-market-sentiment-widgets'); ?></strong> <code>reddit</code>, <code>x</code>, <code>news</code>, <code>polymarket</code></li>
+                                    <li><strong><?php echo esc_html__('Sources:', 'adanos-market-sentiment-widgets'); ?></strong> <code>reddit</code>, <code>x</code>, <code>news</code>, <code>polymarket</code>, <code>crypto</code></li>
                                     <li><strong><?php echo esc_html__('Period:', 'adanos-market-sentiment-widgets'); ?></strong> <?php echo esc_html__('1 to 30 days', 'adanos-market-sentiment-widgets'); ?></li>
                                     <li><strong><?php echo esc_html__('Other options:', 'adanos-market-sentiment-widgets'); ?></strong> <code>show_logos</code>, <code>theme</code>, <code>width</code></li>
                                 </ul>
@@ -236,21 +236,21 @@ function adanos_rsi_render_settings_page() {
                             </div>
                             <div class="adanos-rsi-shortcode">
                                 <h3><code>[adanos_summary]</code></h3>
-                                <p><?php echo esc_html__('Inline one-sentence summary for a stock and source.', 'adanos-market-sentiment-widgets'); ?></p>
+                                <p><?php echo esc_html__('Inline one-sentence summary for a stock or crypto token and source.', 'adanos-market-sentiment-widgets'); ?></p>
                                 <code class="adanos-rsi-snippet">[adanos_summary symbol="AAPL" source="x" format="sentence"]</code>
                                 <ul>
                                     <li><strong><?php echo esc_html__('Formats:', 'adanos-market-sentiment-widgets'); ?></strong> <code>sentence</code>, <code>brief</code>, <code>explanation</code></li>
-                                    <li><strong><?php echo esc_html__('Sources:', 'adanos-market-sentiment-widgets'); ?></strong> <code>reddit</code>, <code>x</code>, <code>news</code>, <code>polymarket</code></li>
-                                    <li><strong><?php echo esc_html__('Best for:', 'adanos-market-sentiment-widgets'); ?></strong> <?php echo esc_html__('article intros, stock pages, and newsletter summaries', 'adanos-market-sentiment-widgets'); ?></li>
+                                    <li><strong><?php echo esc_html__('Sources:', 'adanos-market-sentiment-widgets'); ?></strong> <code>reddit</code>, <code>x</code>, <code>news</code>, <code>polymarket</code>, <code>crypto</code></li>
+                                    <li><strong><?php echo esc_html__('Best for:', 'adanos-market-sentiment-widgets'); ?></strong> <?php echo esc_html__('article intros, asset pages, and newsletter summaries', 'adanos-market-sentiment-widgets'); ?></li>
                                 </ul>
                             </div>
                             <div class="adanos-rsi-shortcode">
                                 <h3><code>[adanos_trending_text]</code></h3>
-                                <p><?php echo esc_html__('Plain-text list or sentence for currently trending stocks.', 'adanos-market-sentiment-widgets'); ?></p>
+                                <p><?php echo esc_html__('Plain-text list or sentence for currently trending stocks or crypto tokens.', 'adanos-market-sentiment-widgets'); ?></p>
                                 <code class="adanos-rsi-snippet">[adanos_trending_text source="news" limit="3" format="sentence"]</code>
                                 <ul>
                                     <li><strong><?php echo esc_html__('Formats:', 'adanos-market-sentiment-widgets'); ?></strong> <code>sentence</code>, <code>list</code>, <code>detailed</code></li>
-                                    <li><strong><?php echo esc_html__('Limit:', 'adanos-market-sentiment-widgets'); ?></strong> <?php echo esc_html__('1 to 10 tickers', 'adanos-market-sentiment-widgets'); ?></li>
+                                    <li><strong><?php echo esc_html__('Limit:', 'adanos-market-sentiment-widgets'); ?></strong> <?php echo esc_html__('1 to 10 assets', 'adanos-market-sentiment-widgets'); ?></li>
                                     <li><strong><?php echo esc_html__('Days:', 'adanos-market-sentiment-widgets'); ?></strong> <code>days</code> or <code>period</code>, <?php echo esc_html__('1 to 30', 'adanos-market-sentiment-widgets'); ?></li>
                                 </ul>
                             </div>
@@ -262,7 +262,7 @@ function adanos_rsi_render_settings_page() {
                         <div class="adanos-rsi-faq">
                             <details open>
                                 <summary><?php echo esc_html__('What can I actually publish with it?', 'adanos-market-sentiment-widgets'); ?></summary>
-                                <p><?php echo esc_html__('Single-stock sentiment cards, live trending strips, top movers tables, inline buzz values, bullish percentages, and sentence summaries that stay current without manual edits.', 'adanos-market-sentiment-widgets'); ?></p>
+                                <p><?php echo esc_html__('Single-asset sentiment cards, live trending strips, top movers tables, inline buzz values, bullish percentages, and sentence summaries that stay current without manual edits.', 'adanos-market-sentiment-widgets'); ?></p>
                             </details>
                             <details>
                                 <summary><?php echo esc_html__('Which shortcode should I use inside articles?', 'adanos-market-sentiment-widgets'); ?></summary>
@@ -270,7 +270,7 @@ function adanos_rsi_render_settings_page() {
                             </details>
                             <details>
                                 <summary><?php echo esc_html__('Which sources are supported?', 'adanos-market-sentiment-widgets'); ?></summary>
-                                <p><?php echo esc_html__('All shortcodes support Reddit, X.com, News, and Polymarket.', 'adanos-market-sentiment-widgets'); ?></p>
+                                <p><?php echo esc_html__('All shortcodes support Reddit, X.com, News, Polymarket, and Reddit Crypto.', 'adanos-market-sentiment-widgets'); ?></p>
                             </details>
                             <details>
                                 <summary><?php echo esc_html__('How does the caching work?', 'adanos-market-sentiment-widgets'); ?></summary>
@@ -301,6 +301,7 @@ function adanos_rsi_render_settings_page() {
                             <span class="adanos-rsi-chip"><?php echo esc_html__('Finance News', 'adanos-market-sentiment-widgets'); ?></span>
                             <span class="adanos-rsi-chip"><?php echo esc_html__('X.com', 'adanos-market-sentiment-widgets'); ?></span>
                             <span class="adanos-rsi-chip"><?php echo esc_html__('Polymarket', 'adanos-market-sentiment-widgets'); ?></span>
+                            <span class="adanos-rsi-chip"><?php echo esc_html__('Reddit Crypto', 'adanos-market-sentiment-widgets'); ?></span>
                         </div>
                     </div>
 
@@ -323,7 +324,7 @@ function adanos_rsi_render_settings_page() {
                     <div class="adanos-rsi-card">
                         <h2><?php echo esc_html__('Best use cases', 'adanos-market-sentiment-widgets'); ?></h2>
                         <ul class="adanos-rsi-bullet-list">
-                            <li><?php echo esc_html__('Stock profile pages with live sentiment context', 'adanos-market-sentiment-widgets'); ?></li>
+                            <li><?php echo esc_html__('Stock and crypto profile pages with live sentiment context', 'adanos-market-sentiment-widgets'); ?></li>
                             <li><?php echo esc_html__('Earnings preview posts and post-call recap articles', 'adanos-market-sentiment-widgets'); ?></li>
                             <li><?php echo esc_html__('“Why this stock is trending” explainers', 'adanos-market-sentiment-widgets'); ?></li>
                             <li><?php echo esc_html__('Market open / market close summary posts', 'adanos-market-sentiment-widgets'); ?></li>
@@ -448,7 +449,13 @@ add_action('admin_post_adanos_rsi_clear_cache', 'adanos_rsi_handle_clear_cache')
 
 function adanos_rsi_cached_get($namespace, $path, $query = array()) {
     $options = adanos_rsi_get_options();
-    $cache_key = adanos_rsi_cache_key($namespace, $query);
+    $cache_key = adanos_rsi_cache_key(
+        $namespace,
+        array(
+            'path' => $path,
+            'query' => $query,
+        )
+    );
     $cached = get_transient($cache_key);
 
     if (false !== $cached) {
@@ -505,6 +512,7 @@ function adanos_rsi_source_specs() {
             'stock_path' => '/reddit/stocks/v1/stock/%s',
             'explain_path' => '/reddit/stocks/v1/stock/%s/explain',
             'trending_path' => '/reddit/stocks/v1/trending',
+            'trending_type' => 'stock',
             'activity_field' => 'mentions',
             'activity_label' => __('Mentions', 'adanos-market-sentiment-widgets'),
             'summary_field' => 'subreddit_count',
@@ -514,6 +522,7 @@ function adanos_rsi_source_specs() {
             'label' => 'X.com',
             'stock_path' => '/x/stocks/v1/stock/%s',
             'trending_path' => '/x/stocks/v1/trending',
+            'trending_type' => 'stock',
             'activity_field' => 'mentions',
             'activity_label' => __('Mentions', 'adanos-market-sentiment-widgets'),
             'summary_field' => 'total_upvotes',
@@ -524,6 +533,7 @@ function adanos_rsi_source_specs() {
             'stock_path' => '/news/stocks/v1/stock/%s',
             'explain_path' => '/news/stocks/v1/stock/%s/explain',
             'trending_path' => '/news/stocks/v1/trending',
+            'trending_type' => 'stock',
             'activity_field' => 'mentions',
             'activity_label' => __('Mentions', 'adanos-market-sentiment-widgets'),
             'summary_field' => 'source_count',
@@ -533,10 +543,20 @@ function adanos_rsi_source_specs() {
             'label' => 'Polymarket',
             'stock_path' => '/polymarket/stocks/v1/stock/%s',
             'trending_path' => '/polymarket/stocks/v1/trending',
+            'trending_type' => 'stock',
             'activity_field' => 'trade_count',
             'activity_label' => __('Trades', 'adanos-market-sentiment-widgets'),
             'summary_field' => 'total_liquidity',
             'summary_label' => __('Liquidity', 'adanos-market-sentiment-widgets'),
+        ),
+        'crypto' => array(
+            'label' => 'Reddit Crypto',
+            'stock_path' => '/reddit/crypto/v1/token/%s',
+            'trending_path' => '/reddit/crypto/v1/trending',
+            'activity_field' => 'mentions',
+            'activity_label' => __('Mentions', 'adanos-market-sentiment-widgets'),
+            'summary_field' => 'subreddit_count',
+            'summary_label' => __('Subreddits', 'adanos-market-sentiment-widgets'),
         ),
     );
 }
@@ -712,9 +732,16 @@ function adanos_rsi_get_stock_widget_payload($source, $ticker, $days, $show_expl
     $activity_value = adanos_rsi_extract_activity_value($detail, $spec);
     $summary_value = isset($detail[$spec['summary_field']]) ? $detail[$spec['summary_field']] : null;
 
+    $asset_name = '';
+    if (isset($detail['company_name'])) {
+        $asset_name = sanitize_text_field($detail['company_name']);
+    } elseif (isset($detail['name'])) {
+        $asset_name = sanitize_text_field($detail['name']);
+    }
+
     return array(
         'ticker' => strtoupper($ticker),
-        'company_name' => isset($detail['company_name']) ? sanitize_text_field($detail['company_name']) : '',
+        'company_name' => $asset_name,
         'source' => $source,
         'source_label' => $spec['label'],
         'buzz_score' => isset($detail['buzz_score']) ? round((float) $detail['buzz_score'], 1) : null,
@@ -736,14 +763,19 @@ function adanos_rsi_get_trending_widget_payload($source, $days, $limit) {
     }
 
     $spec = $specs[$source];
+    $query = array(
+        'days' => $days,
+        'limit' => $limit,
+    );
+
+    if (!empty($spec['trending_type'])) {
+        $query['type'] = $spec['trending_type'];
+    }
+
     $payload = adanos_rsi_cached_get(
         'trending_' . $source,
         $spec['trending_path'],
-        array(
-            'days' => $days,
-            'limit' => $limit,
-            'type' => 'stock',
-        )
+        $query
     );
 
     if (is_wp_error($payload)) {
@@ -767,7 +799,9 @@ function adanos_rsi_get_trending_widget_payload($source, $days, $limit) {
 
         $rows[] = array(
             'ticker' => $symbol,
-            'company_name' => isset($item['company_name']) ? sanitize_text_field($item['company_name']) : '',
+            'company_name' => isset($item['company_name'])
+                ? sanitize_text_field($item['company_name'])
+                : (isset($item['name']) ? sanitize_text_field($item['name']) : ''),
             'buzz_score' => isset($item['buzz_score']) ? round((float) $item['buzz_score'], 1) : 0.0,
             'bullish_pct' => isset($item['bullish_pct']) ? round((float) $item['bullish_pct'], 1) : null,
             'trend' => !empty($item['trend']) ? sanitize_text_field($item['trend']) : 'stable',
@@ -1109,7 +1143,7 @@ function adanos_rsi_shortcode_stock_sentiment($atts) {
     $symbol = strtoupper(sanitize_text_field($symbol));
 
     if ('' === $symbol) {
-        return adanos_rsi_render_error(__('Please provide a stock symbol via symbol="AAPL".', 'adanos-market-sentiment-widgets'));
+        return adanos_rsi_render_error(__('Please provide a stock ticker or crypto symbol via symbol="AAPL" or symbol="BTC".', 'adanos-market-sentiment-widgets'));
     }
 
     return adanos_rsi_render_widget(
@@ -1197,7 +1231,7 @@ function adanos_rsi_shortcode_value($atts) {
     $symbol = strtoupper(sanitize_text_field($symbol));
 
     if ('' === $symbol) {
-        return esc_html__('Please provide a stock symbol.', 'adanos-market-sentiment-widgets');
+        return esc_html__('Please provide a stock ticker or crypto symbol.', 'adanos-market-sentiment-widgets');
     }
 
     $payload = adanos_rsi_get_stock_widget_payload(
@@ -1237,7 +1271,7 @@ function adanos_rsi_shortcode_summary($atts) {
     $symbol = strtoupper(sanitize_text_field($symbol));
 
     if ('' === $symbol) {
-        return esc_html__('Please provide a stock symbol.', 'adanos-market-sentiment-widgets');
+        return esc_html__('Please provide a stock ticker or crypto symbol.', 'adanos-market-sentiment-widgets');
     }
 
     $format = sanitize_key($atts['format']);
