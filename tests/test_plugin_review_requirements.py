@@ -42,7 +42,7 @@ def test_readme_matches_new_brand_and_contributor():
     assert "Contributors: adanosorg" in readme
     assert "Tested up to: 7.0" in readme
     assert "Stable tag: 0.7.0" in readme
-    assert '<a href="https://adanos.org/reddit-stock-sentiment#api-form">' in readme
+    assert '<a href="https://adanos.org/register">' in readme
     assert '<a href="https://api.adanos.org/docs">' in readme
     assert '<a href="https://adanos.org/privacy-policy">' in readme
     assert '<a href="https://adanos.org/terms">' in readme
@@ -58,6 +58,10 @@ def test_plugin_supports_reddit_crypto_source():
     assert "'trending_type' => 'stock'" in plugin
     assert "if (!empty($spec['trending_type']))" in plugin
     assert "'path' => $path" in plugin
+    assert "function adanos_rsi_date_window_query($days)" in plugin
+    assert "'from' => gmdate('Y-m-d', $from_timestamp)" in plugin
+    assert "'to' => $to" in plugin
+    assert "array('days' => $days)" not in plugin
     crypto_source = re.search(r"'crypto' => array\((.*?)\n        \),", plugin, re.S)
     assert crypto_source is not None
     assert "'trending_type'" not in crypto_source.group(1)

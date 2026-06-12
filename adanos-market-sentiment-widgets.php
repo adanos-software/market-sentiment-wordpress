@@ -120,7 +120,7 @@ function adanos_rsi_render_api_key_field() {
     <input type="password" class="regular-text" name="<?php echo esc_attr(ADANOS_RSI_OPTION); ?>[api_key]" value="<?php echo esc_attr($options['api_key']); ?>" autocomplete="off" />
     <p class="description">
         <?php echo esc_html__('Used by the local WordPress proxy for cached requests to the Adanos Market Sentiment API.', 'adanos-market-sentiment-widgets'); ?>
-        <a href="https://adanos.org/reddit-stock-sentiment#api-form" target="_blank" rel="noopener noreferrer"><?php echo esc_html__('Get an API key', 'adanos-market-sentiment-widgets'); ?></a>
+        <a href="https://adanos.org/register" target="_blank" rel="noopener noreferrer"><?php echo esc_html__('Get an API key', 'adanos-market-sentiment-widgets'); ?></a>
     </p>
     <?php
 }
@@ -288,7 +288,7 @@ function adanos_rsi_render_settings_page() {
                     <div class="adanos-rsi-card">
                         <h2><?php echo esc_html__('Quick start', 'adanos-market-sentiment-widgets'); ?></h2>
                         <ol class="adanos-rsi-steps">
-                            <li><span><?php echo esc_html__('Create an API key from the Adanos retail sentiment page.', 'adanos-market-sentiment-widgets'); ?> <a href="https://adanos.org/reddit-stock-sentiment#api-form" target="_blank" rel="noopener noreferrer"><?php echo esc_html__('Get an API key', 'adanos-market-sentiment-widgets'); ?></a></span></li>
+                            <li><span><?php echo esc_html__('Create an API key from the Adanos registration page.', 'adanos-market-sentiment-widgets'); ?> <a href="https://adanos.org/register" target="_blank" rel="noopener noreferrer"><?php echo esc_html__('Get an API key', 'adanos-market-sentiment-widgets'); ?></a></span></li>
                             <li><span><?php echo esc_html__('Paste the key into the settings form and save changes.', 'adanos-market-sentiment-widgets'); ?></span></li>
                             <li><span><?php echo esc_html__('Copy one shortcode into a post, page, or reusable block.', 'adanos-market-sentiment-widgets'); ?></span></li>
                         </ol>
@@ -632,6 +632,17 @@ function adanos_rsi_sanitize_period($value) {
     return $period;
 }
 
+function adanos_rsi_date_window_query($days) {
+    $days = adanos_rsi_sanitize_period($days);
+    $to = gmdate('Y-m-d');
+    $from_timestamp = strtotime($to . ' 00:00:00 UTC') - (($days - 1) * DAY_IN_SECONDS);
+
+    return array(
+        'from' => gmdate('Y-m-d', $from_timestamp),
+        'to' => $to,
+    );
+}
+
 function adanos_rsi_extract_activity_value($data, $spec) {
     if (isset($data[$spec['activity_field']])) {
         return $data[$spec['activity_field']];
@@ -722,7 +733,7 @@ function adanos_rsi_get_stock_widget_payload($source, $ticker, $days, $show_expl
     $detail = adanos_rsi_cached_get(
         'stock_' . $source,
         sprintf($spec['stock_path'], rawurlencode($ticker)),
-        array('days' => $days)
+        adanos_rsi_date_window_query($days)
     );
 
     if (is_wp_error($detail)) {
@@ -763,10 +774,8 @@ function adanos_rsi_get_trending_widget_payload($source, $days, $limit) {
     }
 
     $spec = $specs[$source];
-    $query = array(
-        'days' => $days,
-        'limit' => $limit,
-    );
+    $query = adanos_rsi_date_window_query($days);
+    $query['limit'] = $limit;
 
     if (!empty($spec['trending_type'])) {
         $query['type'] = $spec['trending_type'];

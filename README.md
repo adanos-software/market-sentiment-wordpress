@@ -32,7 +32,7 @@ It also registers suggested privacy-policy text in WordPress so site owners can 
 1. Upload the plugin files to `wp-content/plugins/adanos-market-sentiment-widgets`.
 2. Activate `Adanos Market Sentiment Widgets` in WordPress admin.
 3. Open `Settings > Adanos Market Sentiment Widgets`.
-4. Add your API key from [adanos.org/reddit-stock-sentiment#api-form](https://adanos.org/reddit-stock-sentiment#api-form).
+4. Add your API key from [adanos.org/register](https://adanos.org/register).
 5. Start with the default cache TTL of `86400` seconds for daily updates on the free plan.
 6. Insert shortcodes into posts, pages, or blocks.
 
@@ -68,6 +68,7 @@ It also registers suggested privacy-policy text in WordPress so site owners can 
 - The API key stays server-side in WordPress options.
 - Visitors do not receive the API key in widget markup or browser requests.
 - Requests are proxied through WordPress REST endpoints.
+- Shortcode `days` values are sent to the Adanos API as UTC `from` and `to` date windows.
 - Responses are cached in WordPress transients, which usually means database-backed caching on standard installs.
 - The plugin ships its own frontend widget JavaScript. It does not hotlink runtime widget code from `adanos.org`.
 
@@ -78,7 +79,7 @@ For full WordPress.org-style disclosure, see [readme.txt](./readme.txt).
 This plugin uses the Adanos Market Sentiment API:
 
 - API docs: [api.adanos.org/docs](https://api.adanos.org/docs)
-- Key signup: [adanos.org/reddit-stock-sentiment#api-form](https://adanos.org/reddit-stock-sentiment#api-form)
+- Key signup: [adanos.org/register](https://adanos.org/register)
 - Privacy policy: [adanos.org/privacy-policy](https://adanos.org/privacy-policy)
 - Terms: [adanos.org/terms](https://adanos.org/terms)
 

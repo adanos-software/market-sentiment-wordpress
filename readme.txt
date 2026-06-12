@@ -38,7 +38,7 @@ Supported sources:
 1. Upload the plugin folder to `/wp-content/plugins/`.
 2. Activate **Adanos Market Sentiment Widgets** in the WordPress admin.
 3. Open **Settings > Adanos Market Sentiment Widgets** and add your Adanos Market Sentiment API key.
-4. If you do not have a key yet, get one at <a href="https://adanos.org/reddit-stock-sentiment#api-form">adanos.org/reddit-stock-sentiment#api-form</a>
+4. If you do not have a key yet, get one at <a href="https://adanos.org/register">adanos.org/register</a>
 5. Use the shortcodes in posts, pages, or widget areas.
 
 == Screenshots ==
@@ -54,7 +54,7 @@ It sends:
 
 * the stock ticker or crypto symbol requested by your shortcode
 * the source you selected (`reddit`, `x`, `news`, `polymarket`, or `crypto`)
-* the requested lookback window and limit values
+* the requested UTC date window and limit values
 * your server IP address as part of the normal HTTPS request
 * your Adanos API key in the request header
 
@@ -72,7 +72,7 @@ Service provider:
 
 = Do I need an API key? =
 
-Yes. The plugin fetches live sentiment data from the Adanos Market Sentiment API through a local WordPress proxy. You can get an API key at <a href="https://adanos.org/reddit-stock-sentiment#api-form">adanos.org/reddit-stock-sentiment#api-form</a>
+Yes. The plugin fetches live sentiment data from the Adanos Market Sentiment API through a local WordPress proxy. You can get an API key at <a href="https://adanos.org/register">adanos.org/register</a>
 
 = What cache setting should I use on a free API key? =
 
@@ -216,7 +216,7 @@ The plugin also adds suggested privacy-policy text in WordPress so site owners c
 = 0.7.0 =
 
 * Added Reddit Crypto support with `source="crypto"` for cards, ticker tapes, top movers, and text shortcodes
-* Updated proxy requests for the current Adanos Market Sentiment API source matrix
+* Updated proxy requests for the current Adanos Market Sentiment API source matrix and UTC `from`/`to` date windows
 * Refreshed plugin copy and documentation for stock and crypto assets
 
 = 0.6.2 =
