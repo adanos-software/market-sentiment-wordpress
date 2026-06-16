@@ -1,8 +1,8 @@
 # Adanos Market Sentiment Widgets for WordPress
 
-`Adanos Market Sentiment Widgets` is a WordPress plugin by [Adanos](https://adanos.org/) for finance publishers, investor blogs, and stock-focused communities.
+`Adanos Market Sentiment Widgets` is a WordPress plugin by [Adanos](https://adanos.org/) for finance publishers, investor blogs, and market-focused communities.
 
-It lets you embed live stock sentiment cards, ticker tapes, top movers tables, and inline text snippets directly inside WordPress posts and pages.
+It lets you embed live stock and crypto sentiment cards, ticker tapes, top movers tables, and inline text snippets directly inside WordPress posts and pages.
 
 The plugin keeps the frontend widget code self-hosted inside WordPress, sends requests server-side, and caches API responses in WordPress transients so normal sites can stay within modest API limits.
 
@@ -10,17 +10,18 @@ It also registers suggested privacy-policy text in WordPress so site owners can 
 
 ## What it adds
 
-- Single-stock sentiment widgets with buzz, bullish percentage, trend, and activity
-- Trending ticker tape widgets for Reddit, Finance News, X.com, and Polymarket
-- Top movers tables for current sentiment leaders
+- Single-asset sentiment widgets with buzz, bullish percentage, trend, and activity
+- Trending ticker tape widgets for Reddit, Reddit Crypto, Finance News, X.com, and Polymarket
+- Top movers tables for current stock and crypto sentiment leaders
 - Text shortcodes for inline buzz values, bullish percentages, and publish-ready summaries
 - Cached responses with a one-click cache clear tool in the WordPress admin
 
 ## Good fits
 
-- Stock profile pages
+- Stock and crypto profile pages
 - Earnings preview and recap posts
 - "Why this stock is trending" explainers
+- "Why this token is trending" explainers
 - Market open / market close summaries
 - Newsletter landing pages
 - Comparison pieces such as `NVDA vs AMD` or `TSLA vs Rivian`
@@ -31,7 +32,7 @@ It also registers suggested privacy-policy text in WordPress so site owners can 
 1. Upload the plugin files to `wp-content/plugins/adanos-market-sentiment-widgets`.
 2. Activate `Adanos Market Sentiment Widgets` in WordPress admin.
 3. Open `Settings > Adanos Market Sentiment Widgets`.
-4. Add your API key from [adanos.org/reddit-stock-sentiment#api-form](https://adanos.org/reddit-stock-sentiment#api-form).
+4. Add your API key from [adanos.org/register](https://adanos.org/register).
 5. Start with the default cache TTL of `86400` seconds for daily updates on the free plan.
 6. Insert shortcodes into posts, pages, or blocks.
 
@@ -41,6 +42,7 @@ It also registers suggested privacy-policy text in WordPress so site owners can 
 
 ```text
 [adanos symbol="AAPL" source="reddit" width="100%"]
+[adanos symbol="BTC" source="crypto" width="100%"]
 [adanos_ticker_tape source="x" limit="10" speed="normal" width="100%"]
 [adanos_top_movers source="news" limit="8" period="7" width="100%"]
 ```
@@ -59,12 +61,14 @@ It also registers suggested privacy-policy text in WordPress so site owners can 
 - `x`
 - `news`
 - `polymarket`
+- `crypto`
 
 ## Security and privacy
 
 - The API key stays server-side in WordPress options.
 - Visitors do not receive the API key in widget markup or browser requests.
 - Requests are proxied through WordPress REST endpoints.
+- Shortcode `days` values are sent to the Adanos API as UTC `from` and `to` date windows.
 - Responses are cached in WordPress transients, which usually means database-backed caching on standard installs.
 - The plugin ships its own frontend widget JavaScript. It does not hotlink runtime widget code from `adanos.org`.
 
@@ -72,10 +76,10 @@ For full WordPress.org-style disclosure, see [readme.txt](./readme.txt).
 
 ## External service
 
-This plugin uses the Adanos Finance API:
+This plugin uses the Adanos Market Sentiment API:
 
 - API docs: [api.adanos.org/docs](https://api.adanos.org/docs)
-- Key signup: [adanos.org/reddit-stock-sentiment#api-form](https://adanos.org/reddit-stock-sentiment#api-form)
+- Key signup: [adanos.org/register](https://adanos.org/register)
 - Privacy policy: [adanos.org/privacy-policy](https://adanos.org/privacy-policy)
 - Terms: [adanos.org/terms](https://adanos.org/terms)
 

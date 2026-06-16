@@ -369,7 +369,7 @@
                 '.sent{display:flex;align-items:center;gap:8px;}.bar{flex:1;max-width:64px;height:4px;background:var(--border);border-radius:999px;overflow:hidden;}.fill{height:100%;}.fill.positive{background:var(--positive);}.fill.negative{background:var(--negative);}.fill.neutral{background:var(--neutral);}' +
                 '.spark svg{display:block;}.logo{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;background:var(--chip);border:1px solid var(--border);font-size:10px;margin-right:8px;color:var(--muted);}' +
                 '@media (max-width:480px){th:nth-child(3),td:nth-child(3){display:none;}}',
-                '<div class="card"><div class="header"><div class="title">Top Movers</div><div class="badge">' + escapeHtml(source.toUpperCase()) + ' Sentiment</div></div><div class="wrap"><table><thead><tr><th>#</th><th>Ticker</th><th>Company</th><th>Buzz</th><th>Bullish</th><th>Trend</th></tr></thead><tbody id="tbody"><tr><td colspan="6" class="status">Loading sentiment data…</td></tr></tbody></table></div></div>'
+                '<div class="card"><div class="header"><div class="title">Top Movers</div><div class="badge">' + escapeHtml(source.toUpperCase()) + ' Sentiment</div></div><div class="wrap"><table><thead><tr><th>#</th><th>Asset</th><th>Name</th><th>Buzz</th><th>Bullish</th><th>Trend</th></tr></thead><tbody id="tbody"><tr><td colspan="6" class="status">Loading sentiment data…</td></tr></tbody></table></div></div>'
             );
         },
         function () {
