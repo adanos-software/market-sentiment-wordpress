@@ -62,6 +62,8 @@ def test_plugin_supports_reddit_crypto_source():
     assert "'from' => gmdate('Y-m-d', $from_timestamp)" in plugin
     assert "'to' => $to" in plugin
     assert "array('days' => $days)" not in plugin
+    assert "if (!empty($detail['company_name']))" in plugin
+    assert ": (!empty($item['name']) ? sanitize_text_field($item['name']) : '')" in plugin
     crypto_source = re.search(r"'crypto' => array\((.*?)\n        \),", plugin, re.S)
     assert crypto_source is not None
     assert "'trending_type'" not in crypto_source.group(1)

@@ -744,9 +744,9 @@ function adanos_rsi_get_stock_widget_payload($source, $ticker, $days, $show_expl
     $summary_value = isset($detail[$spec['summary_field']]) ? $detail[$spec['summary_field']] : null;
 
     $asset_name = '';
-    if (isset($detail['company_name'])) {
+    if (!empty($detail['company_name'])) {
         $asset_name = sanitize_text_field($detail['company_name']);
-    } elseif (isset($detail['name'])) {
+    } elseif (!empty($detail['name'])) {
         $asset_name = sanitize_text_field($detail['name']);
     }
 
@@ -808,9 +808,9 @@ function adanos_rsi_get_trending_widget_payload($source, $days, $limit) {
 
         $rows[] = array(
             'ticker' => $symbol,
-            'company_name' => isset($item['company_name'])
+            'company_name' => !empty($item['company_name'])
                 ? sanitize_text_field($item['company_name'])
-                : (isset($item['name']) ? sanitize_text_field($item['name']) : ''),
+                : (!empty($item['name']) ? sanitize_text_field($item['name']) : ''),
             'buzz_score' => isset($item['buzz_score']) ? round((float) $item['buzz_score'], 1) : 0.0,
             'bullish_pct' => isset($item['bullish_pct']) ? round((float) $item['bullish_pct'], 1) : null,
             'trend' => !empty($item['trend']) ? sanitize_text_field($item['trend']) : 'stable',
